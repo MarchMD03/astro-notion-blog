@@ -17,7 +17,9 @@ const id = buildHeadingId(block.Heading3)
 
 {
   block.Heading3.IsToggleable ? (
-    <details class={`toggle ${snakeToKebab(block.Heading3.Color)}`} open>
+    // <details class={`toggle ${snakeToKebab(block.Heading3.Color)}`} open>
+    // 色削除
+    <details class={`toggle`} open>
       <summary>
         <a href={`#${id}`} id={id}>
           <h6>
@@ -68,8 +70,8 @@ const id = buildHeadingId(block.Heading3)
   .toggle > summary {
     cursor: pointer;
 
-    /* トグルマークのサイズを変更 */
-    font-size: 1.2rem;
+    /* トグルマークを削除 */
+    list-style-type: none;
   }
 
   .toggle > summary > a {

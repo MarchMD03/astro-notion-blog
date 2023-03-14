@@ -17,7 +17,9 @@ const id = buildHeadingId(block.Heading1)
 
 {
   block.Heading1.IsToggleable ? (
-    <details class={`toggle ${snakeToKebab(block.Heading1.Color)}`} open>
+    // <details class={`toggle ${snakeToKebab(block.Heading1.Color)}`} open>
+    // 色削除
+    <details class={`toggle`} open>
       <summary>
         <a href={`#${id}`} id={id}>
           <h4>
