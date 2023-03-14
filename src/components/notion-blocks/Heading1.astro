@@ -1,5 +1,6 @@
 ---
 import * as interfaces from '../../lib/interfaces.ts'
+import { snakeToKebab } from '../../lib/style-helpers.ts'
 import { buildHeadingId } from '../../lib/blog-helpers.ts'
 import RichText from './RichText.astro'
 import NotionBlocks from '../NotionBlocks.astro'
@@ -16,7 +17,7 @@ const id = buildHeadingId(block.Heading1)
 
 {
   block.Heading1.IsToggleable ? (
-    <details class="toggle">
+    <details class={`toggle ${snakeToKebab(block.Heading1.Color)}`} open>
       <summary>
         <a href={`#${id}`} id={id}>
           <h4>
@@ -48,6 +49,28 @@ const id = buildHeadingId(block.Heading1)
     margin: 1.1em 0 0.3em;
     color: var(--fg);
     font-size: 1.8rem;
+
+    /* マージン調整 */
+    margin: 3.2em 0 1.8em;
+
+    /* 見出しデザイン */
+    position: relative;
+    background: #f1f8ff;
+    padding: 0.25em 0.5em;
+    border-left: solid 2em var(--accents-add-1);
+  }
+  h4::before{
+    /* 見出しデザイン */
+    font-family: "Font Awesome 5 Free";
+    content: "\f303";
+    position: absolute;
+    padding: 0em;
+    color: white;
+    font-weight: 900;
+    left: -1.35em;
+    top: 50%;
+    -webkit-transform: translateY(-50%);
+    transform: translateY(-50%);
   }
   @media (max-width: 640px) {
     h4 {
@@ -66,14 +89,21 @@ const id = buildHeadingId(block.Heading1)
 
   .toggle > summary {
     cursor: pointer;
+
+    /* トグルマークを削除 */
+    list-style-type: none;
   }
 
   .toggle > summary > a {
-    display: inline;
+    /* display: inline; */
+    /* 見出しのボーター調整のためblockに修正 */
+    display: block;
   }
 
   .toggle > summary > a > h4 {
-    display: inline;
+    /* display: inline; */
+    /* 見出しのボーター調整のためblockに修正 */
+    display: block;
   }
 
   .toggle > div {

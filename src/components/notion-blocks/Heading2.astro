@@ -1,5 +1,6 @@
 ---
 import * as interfaces from '../../lib/interfaces.ts'
+import { snakeToKebab } from '../../lib/style-helpers.ts'
 import { buildHeadingId } from '../../lib/blog-helpers.ts'
 import RichText from './RichText.astro'
 import NotionBlocks from '../NotionBlocks.astro'
@@ -16,7 +17,7 @@ const id = buildHeadingId(block.Heading2)
 
 {
   block.Heading2.IsToggleable ? (
-    <details class="toggle">
+    <details class={`toggle ${snakeToKebab(block.Heading2.Color)}`} open>
       <summary>
         <a href={`#${id}`} id={id}>
           <h5>
@@ -45,9 +46,15 @@ const id = buildHeadingId(block.Heading2)
 
 <style>
   h5 {
-    margin: 1em 0 0.3em;
+    /* margin: 1em 0 0.3em; */
+    /* マージン調整 */
+    margin: 3em 0 1em;
     color: var(--fg);
     font-size: 1.5rem;
+
+    /* 見出しデザイン */
+    padding: 10px 0 10px 16px;
+    border-left: 4px solid var(--accents-add-1);
   }
   @media (max-width: 640px) {
     h5 {
@@ -66,6 +73,9 @@ const id = buildHeadingId(block.Heading2)
 
   .toggle > summary {
     cursor: pointer;
+
+    /* トグルマークを削除 */
+    list-style-type: none;
   }
 
   .toggle > summary > a {
@@ -74,6 +84,8 @@ const id = buildHeadingId(block.Heading2)
 
   .toggle > summary > a > h5 {
     display: inline;
+    /* マージンを効かせるため変更 */
+    display: inline-block;
   }
 
   .toggle > div {

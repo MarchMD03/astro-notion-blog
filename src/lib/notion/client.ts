@@ -47,8 +47,6 @@ import type {
   Emoji,
   FileObject,
   LinkToPage,
-  Mention,
-  Reference,
 } from '../interfaces'
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 import { Client } from '@notionhq/client'
@@ -858,7 +856,9 @@ function _buildPost(pageObject: responses.PageObject): Post {
 
   const post: Post = {
     PageId: pageObject.id,
-    Title: prop.Page.title ? prop.Page.title[0].plain_text : '',
+    // Title: prop.Page.title ? prop.Page.title[0].plain_text : '',
+    // タイトルの列を変更（Page列のタイトル → title列）
+    Title: prop.Title.rich_text ? prop.Title.rich_text[0].plain_text : '',
     Icon: icon,
     Cover: cover,
     Slug: prop.Slug.rich_text ? prop.Slug.rich_text[0].plain_text : '',
@@ -908,19 +908,6 @@ function _buildRichText(richTextObject: responses.RichTextObject): RichText {
       Expression: richTextObject.equation.expression,
     }
     richText.Equation = equation
-  } else if (richTextObject.type === 'mention' && richTextObject.mention) {
-    const mention: Mention = {
-      Type: richTextObject.mention.type,
-    }
-
-    if (richTextObject.mention.type === 'page' && richTextObject.mention.page) {
-      const reference: Reference = {
-        Id: richTextObject.mention.page.id,
-      }
-      mention.Page = reference
-    }
-
-    richText.Mention = mention
   }
 
   return richText

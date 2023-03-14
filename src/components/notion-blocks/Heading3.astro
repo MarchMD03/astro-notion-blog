@@ -1,5 +1,6 @@
 ---
 import * as interfaces from '../../lib/interfaces.ts'
+import { snakeToKebab } from '../../lib/style-helpers.ts'
 import { buildHeadingId } from '../../lib/blog-helpers.ts'
 import RichText from './RichText.astro'
 import NotionBlocks from '../NotionBlocks.astro'
@@ -16,7 +17,7 @@ const id = buildHeadingId(block.Heading3)
 
 {
   block.Heading3.IsToggleable ? (
-    <details class="toggle">
+    <details class={`toggle ${snakeToKebab(block.Heading3.Color)}`} open>
       <summary>
         <a href={`#${id}`} id={id}>
           <h6>
@@ -66,6 +67,9 @@ const id = buildHeadingId(block.Heading3)
 
   .toggle > summary {
     cursor: pointer;
+
+    /* トグルマークのサイズを変更 */
+    font-size: 1.2rem;
   }
 
   .toggle > summary > a {
