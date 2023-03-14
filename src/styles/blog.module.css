@@ -1,3 +1,18 @@
+/* デザイン調整 */
+.main{
+  background: var(--main-add-1);
+  box-shadow: var(--box-shadow);
+  padding: 2vw;
+}
+/* デザイン調整（メインと合わせる） */
+.aside{
+  background: var(--main-add-1);
+  box-shadow: var(--box-shadow);
+  padding: 2vw;
+}
+
+
+
 .main header {
   padding: 0 0 20px;
 }
