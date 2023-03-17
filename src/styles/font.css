@@ -1,0 +1,32 @@
+/* 参考：https://blog.triana.jp/?p=8726 */
+
+@font-face {
+  font-family: 'icomoon';
+  src:  url('fonts/icomoon.eot?3om6zd');
+  src:  url('fonts/icomoon.eot?3om6zd#iefix') format('embedded-opentype'),
+    url('fonts/icomoon.ttf?3om6zd') format('truetype'),
+    url('fonts/icomoon.woff?3om6zd') format('woff'),
+    url('fonts/icomoon.svg?3om6zd#icomoon') format('svg');
+  font-weight: normal;
+  font-style: normal;
+  font-display: block;
+}
+
+[class^="fa-"], [class*=" fa-"] {
+  /* use !important to prevent issues with browser extensions that change fonts */
+  font-family: 'icomoon' !important;
+  /* speak: never;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1; */
+
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.fa-pencil:before {
+  content: "\e900";
+}
