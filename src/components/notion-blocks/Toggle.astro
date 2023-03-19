@@ -33,6 +33,28 @@ const { block, headings } = Astro.props
 
   .toggle > summary {
     cursor: pointer;
+
+    /* トグルマークを削除 */
+    list-style-type: none;
+    position: relative;
+  }
+  .toggle > summary::-webkit-details-marker {
+    /* Safariで表示されるトグルマークを削除 */
+    display: none;
+  }
+  /* トグルのアイコン */
+  .toggle > summary::after{
+    content: "+";
+    position: absolute;
+    right: 20px;
+    transition: all 0.3s ease;
+    font-size: 1.5rem;
+    font-weight: bold;
+  }
+  /* トグルのアイコン（開いているとき） */
+  .toggle[open] > summary::after{
+    /* 「+」⇒「×」 */
+    transform: rotate(45deg);
   }
 
   .toggle > summary > a {
@@ -41,5 +63,20 @@ const { block, headings } = Astro.props
 
   .toggle > div {
     margin-left: 1em;
+  }
+
+  /* トグルを開くアニメーションを滑らかに */
+  .toggle[open] div {
+    animation: ani 1s;  /* アニメーションの指定 */
+  }
+  @keyframes ani {
+    0% {
+      opacity: 0;   /* 最初は見えない状態 */
+      transform: translateY(-20px); /* 20px上にずらしておく */
+    }
+    100% {
+      opacity: 1; /* 1秒後に見えるように */
+      transform: none;  /* 20pxずらしたものを取り除く */
+    }
   }
 </style>
