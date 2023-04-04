@@ -213,6 +213,9 @@ const asidePaddingTop = '20px'
   @media (max-width: 640px) {
     main {
       order: 1;
+
+      /* 幅を確保 */
+      width: 100%;
     }
   }
 
@@ -224,11 +227,18 @@ const asidePaddingTop = '20px'
     /* デザイン調整（メインと合わせる） */
     background-color: var(--bg);
   }
+  /* タブレットサイズで幅を調整 */
+  @media (max-width: 1080px) {
+    aside {
+      width: calc( var(--aside-width) * 0.6 );
+      padding: var(--asidePaddingTop) 0px 0px;
+    }
+  }
   @media (max-width: 640px) {
     aside {
       order: 2;
       width: 100%;
-      padding: 40px 20px 20px;
+      /* padding: 40px 20px 20px; */
     }
   }
 
@@ -243,7 +253,8 @@ const asidePaddingTop = '20px'
   }
 
   div.content {
-    padding: 20px 40px;
+    /* 間隔調整 */
+    padding: 20px 40px 20px 0px;
   }
   @media (max-width: 640px) {
     div.content {
@@ -421,7 +432,7 @@ const asidePaddingTop = '20px'
     --font-mono: SFMono-Regular, Menlo, Consolas, 'PT Mono', 'Liberation Mono',
       Courier, monospace;
 
-    --aside-width: 300px;   /* サイドバーの幅 */
+    --aside-width: 500px;   /* サイドバーの幅 */
   }
 
   * {
