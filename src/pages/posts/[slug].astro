@@ -123,14 +123,16 @@ if (post.FeaturedImage && post.FeaturedImage.Url) {
     {// 目次}
     <ContentList blocks={blocks} />
 
-    <BlogPostsLink
-      heading="Posts in the same category"
-      posts={postsHavingSameTag.filter(
-        (p: interfaces.Post) => p.Slug !== post.Slug
-      )}
-    />
-    <BlogPostsLink heading="Recommended" posts={rankedPosts} />
-    <BlogPostsLink heading="Latest posts" posts={recentPosts} />
+    <!--
+      <BlogPostsLink
+        heading="Posts in the same category"
+        posts={postsHavingSameTag.filter(
+          (p: interfaces.Post) => p.Slug !== post.Slug
+        )}
+      />
+      <BlogPostsLink heading="Recommended" posts={rankedPosts} />
+      <BlogPostsLink heading="Latest posts" posts={recentPosts} />
+    -->
     <BlogTagsLink heading="Categories" tags={tags} />
   </div>
 </Layout>
