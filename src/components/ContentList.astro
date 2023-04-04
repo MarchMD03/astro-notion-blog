@@ -1,0 +1,128 @@
+---
+/**
+ * 独自追加ファイル
+ * 
+ * 目次を生成する
+ * 目次の対象
+ *    ページ直下->見出し1ブロック
+ *    ページ直下->見出し2ブロック
+ *    ページ直下->トグル見出し1ブロック
+ *    ページ直下->トグル見出し2ブロック
+ * 
+ *    ページ直下->トグル見出し->見出し1ブロック
+ *    ページ直下->トグル見出し->見出し2ブロック
+ *    ページ直下->トグル見出し->トグル見出し1ブロック
+ *    ページ直下->トグル見出し->トグル見出し2ブロック
+ *    （2階層以上のトグルは対象外）
+ */
+
+import type { SelectProperty } from '../lib/interfaces.ts'
+import { getTagLink } from '../lib/blog-helpers.ts'
+import NoContents from './NoContents.astro'
+import '../styles/notion-color.css'
+import { Block } from '../lib/interfaces.ts'
+import * as interfaces from '../lib/interfaces.ts'
+import { buildHeadingId } from '../lib/blog-helpers.ts'
+import { snakeToKebab } from '../lib/style-helpers.ts'
+
+export interface Props {
+  blocks: Block[]
+}
+
+const { blocks } = Astro.props
+
+---
+
+<div class="content-list">
+  <h3>目次</h3>
+  {
+    blocks.length === 0 ? (
+      <NoContents contents={'目次なし'} />
+    ) : (
+      <ul>
+        {
+          // 全ブロックから「見出し1」「見出し2」を目次に使う（ただし対象はトグルの1階層目まで）
+          blocks.map((Block: interfaces.Block) =>{
+            const heading = Block.Heading1 || Block.Heading2/* || Block.Heading3*/
+            let indentClass = ''
+            // 見出しブロックの場合
+            if (heading) {
+              // 見出しにインデントを付ける
+              if (Block.Type === 'heading_2') {
+                indentClass = 'indent-1'
+              } 
+              // else if (Block.Type === 'heading_3') {
+              //   indentClass = 'indent-2'
+              // }
+            
+              // 一番上の階層の見出しを取得
+              let ret = [
+                <div>
+                  <a
+                    href={`#${buildHeadingId(heading)}`}
+                    class={`table-of-contents blue} ${indentClass}`}
+                  >
+                    {heading.RichTexts.map(
+                      (richText: interfaces.RichText) => richText.PlainText
+                    ).join('')}
+                  </a>
+                </div>
+              ]
+
+              // 子ブロックがある場合（トグル見出しの場合）
+              if ( Block.HasChildren && heading.Children ){
+                // 子ブロックから「見出し1」「見出し2」を目次に使う（ただし対象はトグルの1階層目まで）
+                heading.Children.map((child_Block: interfaces.Block) =>{
+                  const child_heading = child_Block.Heading1 || child_Block.Heading2/* || child_Block.Heading3*/
+                  let child_indentClass = ''
+                  // 見出しブロックの場合
+                  if (child_heading) {
+                    // 見出しにインデントを付ける
+                    if (child_Block.Type === 'heading_2') {
+                      child_indentClass = 'indent-1'
+                    }
+                    // else if (child_Block.Type === 'heading_3') {
+                    //   child_indentClass = 'indent-2'
+                    // }
+
+                    // トグルの1階層目の見出しを取得
+                    ret.push(
+                      <div>
+                        <a
+                          href={`#${buildHeadingId(child_heading)}`}
+                          class={`table-of-contents blue} ${child_indentClass}`}
+                        >
+                          {child_heading.RichTexts.map(
+                            (richText: interfaces.RichText) => richText.PlainText
+                          ).join('')}
+                        </a>
+                      </div>
+                    )
+                  }
+                });
+              }
+              
+              return ret;
+            }
+            // 見出しでないブロックの場合
+            else{
+              return '';
+            }
+          })
+        }
+      </ul>
+    )
+  }
+</div>
+
+<style>
+  a.indent-1 {
+    padding-left: 1.5rem;
+  }
+  a.indent-2 {
+    padding-left: 3rem;
+  }
+  .content-list {
+    margin-bottom: 80px;
+  }
+</style>

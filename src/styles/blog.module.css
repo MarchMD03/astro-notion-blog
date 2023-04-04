@@ -4,13 +4,32 @@
   box-shadow: var(--box-shadow);
   padding: 2vw;
 }
-/* デザイン調整（メインと合わせる） */
 .aside{
+  /* デザイン調整（メインと合わせる） */
   background: var(--main-add-1);
   box-shadow: var(--box-shadow);
   padding: 2vw;
-}
 
+  /* 固定 */
+  margin-bottom:50px;
+  position: sticky;
+  position: -webkit-sticky;
+  top: var(--asidePaddingTop);
+
+  /* スクロール */
+  overflow:auto;  /*スクロール機能*/
+	height: 100vh; /* 目次の高さ上限*/
+}
+/* Macでもスクロールバーが表示されるようにする */
+::-webkit-scrollbar {
+  -webkit-appearance: none;
+  width: 7px;
+}
+::-webkit-scrollbar-thumb {
+border-radius: 4px;
+background-color: rgba(0,0,0,.5);
+box-shadow: 0 0 1px rgba(255,255,255,.5);
+}
 
 
 .main header {
