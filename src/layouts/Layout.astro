@@ -24,10 +24,10 @@ const database = await getDatabase()
 
 const siteTitle = title ? `${title} - ${database.Title}` : database.Title
 const siteDescription = description ? description : database.Description
-const siteURL = new URL(path, Astro.site).toString()
-// const siteOGImage = new URL('/default-og-image.png', Astro.site)
+const siteURL = new URL(getNavLink(path), Astro.site).toString()
+// const siteOGImage = new URL(getStaticFilePath('/default-og-image.png'), Astro.site)
 // OGP画像変更
-const siteOGImage = new URL('/OGP.png', Astro.site)
+const siteOGImage = new URL(getStaticFilePath('/OGP.png'), Astro.site)
 
 let coverImageURL: string
 if (database.Cover) {
