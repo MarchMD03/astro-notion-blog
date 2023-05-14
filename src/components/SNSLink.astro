@@ -1,0 +1,82 @@
+---
+import { Post } from '../lib/interfaces.ts'
+import { getPostLink } from '../lib/blog-helpers.ts'
+import NoContents from './NoContents.astro'
+import '../styles/font.css'
+
+export interface Props {
+  heading: string
+}
+
+const { heading } = Astro.props
+---
+
+<div class="sns-link">
+  <h3>{heading}</h3>
+  {
+    <p>＼エンジニアのお友達を募集中😊／</p>
+    <ul>
+      <li><a class="twitter-link" href="https://twitter.com/rakuraku_eng"><span class="fa-twitter"></span></a></li>
+    </ul>
+    
+  }
+</div>
+
+<style>
+  .sns-link {
+  }
+  .sns-link h3 {
+    margin: 0;
+    padding-left: 0.4rem;
+    color: #777;
+    font-size: 1.4rem;
+  }
+  .sns-link ul {
+    list-style-type: none;
+    padding: 0;
+    margin-top: 0.4rem;
+    margin-block-end: 1rem;
+  }
+  .sns-link p {
+    margin: 0;
+  }
+  .sns-link ul li {
+  }
+  .sns-link ul li a {
+    /* display: block; */
+    border-radius: var(--radius);
+    padding: 0.4rem 0.4rem;
+    line-height: 1.2rem;
+    color: inherit;
+    font-size: 0.95rem;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+
+    background-color: #1da1f2;
+    display: flex;
+    align-items: center;
+    align-content: center;
+    justify-content: center;
+    position: relative;
+    margin-bottom: 3rem;
+  }
+  .sns-link ul li a:hover {
+    /* background-color: #ddd; */
+    opacity: 0.7;
+    color: #fff;
+    transition: all 0.3s ease-in-out;
+  }
+  .sns-link ul li a span,
+  .sns-link ul li a img {
+    display: inline-block;
+    margin-right: 0.2rem;
+
+    color: #fff;
+  }
+  .sns-link ul li a img {
+    width: 1.25rem;
+    height: 1.25rem;
+    vertical-align: sub;
+  }
+</style>

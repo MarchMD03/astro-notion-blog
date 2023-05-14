@@ -27,6 +27,9 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+.fa-twitter:before {
+  content: "\e901";
+}
 .fa-pencil:before {
   content: "\e900";
 }
