@@ -28,7 +28,8 @@ const { block, headings } = Astro.props
 
 <style>
   .toggle {
-    padding: 0.4rem;
+    /* 余白調整 */
+    margin-bottom: 0.8rem;
   }
 
   .toggle > summary {
@@ -37,6 +38,9 @@ const { block, headings } = Astro.props
     /* トグルマークを削除 */
     list-style-type: none;
     position: relative;
+
+    /* 余白調整 */
+    padding: 0.8rem;
   }
   .toggle > summary::-webkit-details-marker {
     /* Safariで表示されるトグルマークを削除 */
@@ -55,6 +59,12 @@ const { block, headings } = Astro.props
   .toggle[open] > summary::after{
     /* 「+」⇒「×」 */
     transform: rotate(45deg);
+  }
+
+  /* トグル内の最初の要素 */
+  .toggle > summary + *{
+    /* 余白調整 */
+    margin-top: 0.8rem;
   }
 
   .toggle > summary > a {
