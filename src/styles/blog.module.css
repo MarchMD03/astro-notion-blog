@@ -49,10 +49,6 @@ box-shadow: 0 0 1px rgba(255,255,255,.5);
 .post {
   margin: 0 auto 40px;
 }
-.post :global(h3) {
-  margin: 0;
-  color: var(--fg);
-}
 .post footer {
   margin-top: 0.5rem;
   padding: 0;

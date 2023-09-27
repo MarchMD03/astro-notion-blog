@@ -4,6 +4,7 @@
 
 [![GitHub stars](https://img.shields.io/github/stars/otoyo/astro-notion-blog)](https://github.com/otoyo/astro-notion-blog/stargazers)
 [![GitHub license](https://img.shields.io/github/license/otoyo/astro-notion-blog)](https://github.com/otoyo/astro-notion-blog/blob/main/LICENSE)
+[![GitHub sponsors](https://img.shields.io/static/v1?label=Sponsor&message=%E2%9D%A4&logo=GitHub&color=%23fe8e86)](https://github.com/sponsors/otoyo)
 
 <img src="https://user-images.githubusercontent.com/1063435/213838069-c9654c32-ec9b-4e82-a3b5-2acbd665b16a.png" width="480">
 
@@ -15,15 +16,21 @@ astro-notion-blog を使えば [Notion](https://www.notion.so) で書けるブ�
 - :hammer_and_wrench: ブログの見た目を**自由にカスタマイズ可能**
 - :white_check_mark: **Notion 公式 API**を使っているため安心
 
-## スクリーンショット
+## :camera_flash: スクリーンショット
 
-<img src="https://user-images.githubusercontent.com/1063435/216562042-818bc312-1941-4b5d-b281-15e0bcb6f153.png" width="480">
+### PC
 
-## デモ
+<img src="https://github.com/otoyo/astro-notion-blog/assets/1063435/967bbc23-014c-427d-b6cd-02c41822fb45" width="600">
+
+### スマートフォン
+
+<img src="https://github.com/otoyo/astro-notion-blog/assets/1063435/bf1add06-1f1c-42ca-88c9-decb8c0dcf8f" width="300">
+
+## :globe_with_meridians: デモ
 
 [https://astro-notion-blog.pages.dev](https://astro-notion-blog.pages.dev)
 
-## クイックスタート
+## :motor_scooter: クイックスタート
 
 ### 必要なもの
 
@@ -50,29 +57,28 @@ astro-notion-blog を使えば [Notion](https://www.notion.so) で書けるブ�
 
 <img src="https://user-images.githubusercontent.com/1063435/213967607-338b8728-d7c9-47e4-8192-e955e3f4ce30.png" width="220">
 
-8. プロジェクトを "Connect to Git" を選んで作成し、先ほどフォークした `<your-account>/astro-notion-blog` リポジトリを選んで "Begin setup" をクリックします
-9. 「ビルドの設定」で、
-   1. 「フレームワーク プリセット」で Astro を選択します
-   2. 「環境変数(アドバンスド)」 を開き `NODE_VERSION`, `NOTION_API_SECRET`, `DATABASE_ID` の 3 つを設定します
-      - `NODE_VERSION` は `v16.13.0` かそれ以上を指定します
-      - 詳しくは [How to deploy a site with Git](https://docs.astro.build/en/guides/deploy/cloudflare/#how-to-deploy-a-site-with-git) をご覧ください
+9. プロジェクトを "Connect to Git" を選んで作成し、先ほどフォークした `<your-account>/astro-notion-blog` リポジトリを選んで "Begin setup" をクリックします
+10. 「ビルドの設定」で、
+    1. 「フレームワーク プリセット」で Astro を選択します
+    2. 「環境変数(アドバンスド)」 を開き `NODE_VERSION`, `NOTION_API_SECRET`, `DATABASE_ID` の 3 つを設定します
+       - `NODE_VERSION` は `v18.16.0` かそれ以上を指定します
+       - 詳しくは [How to deploy a site with Git](https://docs.astro.build/en/guides/deploy/cloudflare/#how-to-deploy-a-site-with-git) をご覧ください
 
 <img src="https://user-images.githubusercontent.com/1063435/213967111-72ea2ad1-ad3b-4629-8b65-7b25bc6ddb31.png" width="400">
 
-<img src="https://user-images.githubusercontent.com/1063435/213967331-a1de0810-a8b4-4fae-adba-110f3f4400cc.png" width="600">
+<img src="https://github.com/otoyo/astro-notion-blog/assets/1063435/17ecdc09-c0f8-4332-8b87-04f4b2ffafce" width="600">
 
 10. "Save and Deploy" をクリックし、デプロイが完了すると Notion Blog が見えるようになります
 
 astro-notion-blog では新しい記事や変更を公開したいとき毎回デプロイが必要になります。  
 Cloudflare Pages のダッシュボードから手動でデプロイするか、GitHub Action のような CI を使って定時デプロイしてください。
 
-## カスタマイズするには
+## :hammer_and_pick: カスタマイズするには
 
 ### 追加の必要要件
 
-- Node.js v16 かそれ以上
+- Node.js v18 かそれ以上
 - Git
-- [Yarn](https://yarnpkg.com/getting-started)
 
 ### ステップ
 
@@ -86,8 +92,8 @@ DATABASE_ID=<YOUR_DATABASE_ID>
 2. 依存関係をインストールしローカルサーバーを起動します
 
 ```sh
-yarn install
-yarn dev
+npm install
+npm run dev
 ```
 
 3. ブラウザで [http://localhost:3000](http://localhost:3000) を開きます
@@ -97,19 +103,15 @@ yarn dev
 
 [wiki](https://github.com/otoyo/astro-notion-blog/wiki) をご覧ください。
 
-## バグ報告 & 機能要望
+## :lady_beetle: バグ報告 & 機能要望
 
 Issue を作成してください。日本語で大丈夫です。
 
-## :bird: Twitter コミュニティ
+## :two_hearts: スポンサー
 
-コミュニティに参加して他のメンバーからサポートを受けたりサポートすることができます。
+astro-notion-blog を気に入っていただけましたら、ソフトウェアの開発を継続できるようにスポンサーになることを検討してください。
 
-- [astro-notion-blog](https://twitter.com/i/communities/1618017732653613056)
-
-## 貢献
-
-Pull requests 歓迎です。
+[![GitHub sponsors](https://img.shields.io/static/v1?label=Sponsor&message=%E2%9D%A4&logo=GitHub&color=%23fe8e86)](https://github.com/sponsors/otoyo)
 
 ---
 
