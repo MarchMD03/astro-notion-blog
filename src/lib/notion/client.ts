@@ -58,57 +58,126 @@ const client = new Client({
 let postsCache: Post[] | null = null
 let dbCache: Database | null = null
 
+// export async function getAllPosts(): Promise<Post[]> {
+//   if (postsCache !== null) {
+//     return Promise.resolve(postsCache)
+//   }
+
+//   const params: requestParams.QueryDatabase = {
+//     database_id: DATABASE_ID,
+//     filter: {
+//       and: [
+//         {
+//           property: 'Published',
+//           checkbox: {
+//             equals: true,
+//           },
+//         },
+//         {
+//           property: 'Date',
+//           date: {
+//             on_or_before: new Date().toISOString(),
+//           },
+//         },
+//       ],
+//     },
+//     sorts: [
+//       {
+//         property: 'Date',
+//         direction: 'descending',
+//       },
+//     ],
+//     page_size: 100,
+//   }
+
+//   let results: responses.PageObject[] = []
+//   while (true) {
+//     const res = (await client.databases.query(
+//       params as any // eslint-disable-line @typescript-eslint/no-explicit-any
+//     )) as responses.QueryDatabaseResponse
+
+//     results = results.concat(res.results)
+
+//     if (!res.has_more) {
+//       break
+//     }
+
+//     params['start_cursor'] = res.next_cursor as string
+//   }
+
+//   postsCache = results
+//     .filter((pageObject) => _validPageObject(pageObject))
+//     .map((pageObject) => _buildPost(pageObject))
+//   return postsCache
+// }
+
+// カスタマイズ：データの取得に失敗してもmaxRetries回まで再試行する
 export async function getAllPosts(): Promise<Post[]> {
-  if (postsCache !== null) {
-    return Promise.resolve(postsCache)
-  }
+  let retryCount = 0;
+  const maxRetries = 10;
 
-  const params: requestParams.QueryDatabase = {
-    database_id: DATABASE_ID,
-    filter: {
-      and: [
-        {
-          property: 'Published',
-          checkbox: {
-            equals: true,
-          },
+  while (retryCount < maxRetries) {
+    try {
+      if (postsCache !== null) {
+        return Promise.resolve(postsCache);
+      }
+
+      const params: requestParams.QueryDatabase = {
+        database_id: DATABASE_ID,
+        filter: {
+          and: [
+            {
+              property: 'Published',
+              checkbox: {
+                equals: true,
+              },
+            },
+            {
+              property: 'Date',
+              date: {
+                on_or_before: new Date().toISOString(),
+              },
+            },
+          ],
         },
-        {
-          property: 'Date',
-          date: {
-            on_or_before: new Date().toISOString(),
+        sorts: [
+          {
+            property: 'Date',
+            direction: 'descending',
           },
-        },
-      ],
-    },
-    sorts: [
-      {
-        property: 'Date',
-        direction: 'descending',
-      },
-    ],
-    page_size: 100,
-  }
+        ],
+        page_size: 100,
+      };
 
-  let results: responses.PageObject[] = []
-  while (true) {
-    const res = (await client.databases.query(
-      params as any // eslint-disable-line @typescript-eslint/no-explicit-any
-    )) as responses.QueryDatabaseResponse
+      let results: responses.PageObject[] = [];
+      while (true) {
+        const res = (await client.databases.query(
+          params as any // eslint-disable-line @typescript-eslint/no-explicit-any
+        )) as responses.QueryDatabaseResponse;
 
-    results = results.concat(res.results)
+        results = results.concat(res.results);
 
-    if (!res.has_more) {
-      break
+        if (!res.has_more) {
+          break;
+        }
+
+        params['start_cursor'] = res.next_cursor as string;
+      }
+
+      postsCache = results
+        .filter((pageObject) => _validPageObject(pageObject))
+        .map((pageObject) => _buildPost(pageObject));
+      return postsCache;
+    } catch (error) {
+      retryCount++;
+      if (retryCount < maxRetries) {
+        console.log(`リトライ回数: ${retryCount}`);
+      } else {
+        throw new Error('リトライ回数を超えました。');
+      }
     }
-
-    params['start_cursor'] = res.next_cursor as string
   }
-
-  postsCache = results
-    .filter((pageObject) => _validPageObject(pageObject))
-    .map((pageObject) => _buildPost(pageObject))
-  return postsCache
+  return Promise.reject(new Error('データの取得に失敗しました。'));
 }
 
 export async function getPosts(pageSize = 10): Promise<Post[]> {
