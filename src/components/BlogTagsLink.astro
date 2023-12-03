@@ -10,24 +10,116 @@ export interface Props {
 }
 
 const { heading, tags } = Astro.props
+
+/**
+ * タグを親カデリー - 子カデリーに分ける
+ */
+let categoryParentChild: { [key: string]: any[] } = {};
+
+// 親カテゴリーを抽出
+tags.forEach((category) => {
+  if (category.color === 'red') {
+    categoryParentChild[category.name] = [];
+  }
+});
+// 子カテゴリーを抽出
+tags.forEach((category) => {
+  if (category.color !== 'red') {
+    const parentCategory = category.name.split('（')[0]; // 親カテゴリー名を取得
+    // 親カテゴリーが存在する場合
+    if (categoryParentChild[parentCategory]) {
+      // const childCategoryName = category.name.match(/（(.+)）/)?.[1] || category.name; // カッコ内の文字を取得
+      // category['name'] = childCategoryName; // カッコ内の文字をカテゴリー名に設定
+      categoryParentChild[parentCategory].push(category);
+    }
+    // 親カテゴリーが存在しない場合
+    else {
+      categoryParentChild['その他'].push(category);
+    }
+  }
+});
+
+/**
+ * タグを色ごとにグループ化する
+ */
+/*
+  const tagsOrderByColor: { [key: string]: SelectProperty[] } = tags.reduce((acc, tag) => {
+  const color = tag.color;
+
+  // 色ごとのキーが存在しなければ、空の配列を作成する
+  if (!acc[color]) {
+    acc[color] = [];
+  }
+
+  // 色ごとの配列に項目を追加する
+  acc[color].push(tag);
+  
+  return acc;
+}, {} as { [key: string]: SelectProperty[] });
+*/
 ---
 
 <div class="blog-tags-link">
   <h2>{heading}</h2>
   {
-    tags.length === 0 ? (
+    // タグ一覧（すべて）
+    // tags.length === 0 ? (
+    //   <NoContents contents={tags} />
+    // ) : (
+    //   <ul>
+    //     {tags.map((tag: SelectProperty) => (
+    //       <li>
+    //         <a href={getTagLink(tag.name)} class={`tag ${tag.color}`}>
+    //           {tag.name}
+    //         </a>
+    //       </li>
+    //     ))}
+    //   </ul>
+    // )
+
+    // タグ一覧（親カテゴリー - 子カテゴリー）
+    Object.keys(categoryParentChild).length === 0 ? (
       <NoContents contents={tags} />
     ) : (
       <ul>
-        {tags.map((tag: SelectProperty) => (
+        {Object.keys(categoryParentChild).map((parentCategory: string) => (
+          categoryParentChild[parentCategory].length !== 0 &&
           <li>
-            <a href={getTagLink(tag.name)} class={`tag ${tag.color}`}>
-              {tag.name}
-            </a>
+            <h3>{parentCategory}</h3>
+            <ul>
+              {categoryParentChild[parentCategory].map((tag: SelectProperty) => (
+                <li>
+                  <a href={getTagLink(tag.name)} class={`tag ${tag.color}`}>
+                    {tag.name.match(/（(.+?)）/)?.[1] || tag.name}
+                  </a>
+                </li>
+              ))}
+            </ul>
           </li>
         ))}
       </ul>
     )
+
+    // タグ一覧（タグを色ごとに表示する）
+    // Object.keys(tagsOrderByColor).length === 0 ? (
+    //   <NoContents contents={tags} />
+    // ) : (
+    //   <ul>
+    //     { 
+    //       Object.keys(tagsOrderByColor).map((color: string) => (
+    //         color !== 'red' && (
+    //           tagsOrderByColor[color].map((tag: SelectProperty) => (
+    //           <li>
+    //             <a href={getTagLink(tag.name)} class={`tag ${tag.color}`}>
+    //               {tag.name}
+    //             </a>
+    //           </li>
+    //           ))
+    //         )
+    //       ))
+    //     }
+    //   </ul>
+    // )
   }
 </div>
 

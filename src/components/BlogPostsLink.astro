@@ -11,12 +11,13 @@ export interface Props {
 const { heading, posts } = Astro.props
 ---
 
-<div class="blog-posts-link">
-  <h2>{heading}</h2>
   {
     posts.length === 0 ? (
-      <NoContents contents={posts} />
+      // <NoContents contents={posts} />
+      null // 処理が空になるのでnullを返す（上記コメントを残しておきたい）
     ) : (
+    <div class="blog-posts-link">
+    <h2>{heading}</h2>
       <ul>
         {posts.map((post: Post) => (
           <li>
@@ -44,9 +45,9 @@ const { heading, posts } = Astro.props
           </li>
         ))}
       </ul>
+    </div>
     )
   }
-</div>
 
 <style>
   .blog-posts-link {
