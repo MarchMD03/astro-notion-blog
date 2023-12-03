@@ -90,7 +90,7 @@ tags.forEach((category) => {
               {categoryParentChild[parentCategory].map((tag: SelectProperty) => (
                 <li>
                   <a href={getTagLink(tag.name)} class={`tag ${tag.color}`}>
-                    {tag.name}
+                    {tag.name.match(/（(.+?)）/)?.[1] || tag.name}
                   </a>
                 </li>
               ))}
