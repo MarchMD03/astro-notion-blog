@@ -1,0 +1,85 @@
+---
+import { getStaticFilePath } from '../lib/blog-helpers.ts'
+
+// const iconImage = new URL(getStaticFilePath('/icon_hiyoko.png'), Astro.site)
+
+export interface Props {
+  isLargeSize: boolean
+}
+
+const { isLargeSize } = Astro.props
+---
+
+<section class="profile-section">
+  <h2>プロフィール</h2>
+  <div class={isLargeSize ? '' : 'flex-box'}>
+      <div class={`icon-circle ${isLargeSize ? 'large-icon' : 'small-icon'}`}>
+          <img src="/icon_hiyoko.png" alt="icon">
+      </div>
+      <div class="profile-content">
+        <p>ま〜ち │ Webエンジニア</p>
+        <p>初心者に寄り添った説明を心がけています✨</p>
+      </div>
+  </div>
+</section>
+
+{isLargeSize &&(
+    
+    <section class="profile-section">
+      <h2>このサイトで発信していること</h2>
+      <div class="site-focus">
+        <p>Web系 │ AI関連 │ 作業効率が上がる情報</p>
+      </div>
+    </section>
+)}
+
+<style>
+.profile-section {
+  color: #191919;
+  background-color: #FFF;
+  margin-bottom: 3rem;
+}
+
+.profile-section .flex-box{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.profile-content, .site-focus {
+    padding-left: 1rem;
+}
+
+.profile-content p, .site-focus p {
+  margin: 0;
+  color: #3F3F3F;
+}
+
+.icon-circle{
+  border-radius: 50%;
+  background-color: #a3c68c;
+  margin: 0 auto;
+}
+
+.icon-circle img{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: auto;
+}
+
+.large-icon{
+  width: 50%;
+  height: 50%;
+  margin-bottom: 30px;
+}
+.small-icon{
+  width: 30%;
+  height: 30%;
+}
+
+</style>
