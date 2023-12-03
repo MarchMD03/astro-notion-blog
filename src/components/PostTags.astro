@@ -19,11 +19,11 @@ const { post, enableLink = true } = Astro.props
         if (enableLink) {
           return (
             <a href={getTagLink(tag.name)} class={`tag ${tag.color}`}>
-              {tag.name}
+              {tag.name.match(/（(.+?)）/)?.[1] || tag.name}
             </a>
           )
         }
-        return <span class={`tag ${tag.color}`}>{tag.name}</span>
+        return <span class={`tag ${tag.color}`}>{tag.name.match(/（(.+?)）/)?.[1] || tag.name}</span>
       })
   }
 </div>
