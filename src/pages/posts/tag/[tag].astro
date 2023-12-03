@@ -20,8 +20,7 @@ import BlogPostsLink from '../../../components/BlogPostsLink.astro'
 import BlogTagsLink from '../../../components/BlogTagsLink.astro'
 import styles from '../../../styles/blog.module.css'
 import '../../../styles/notion-color.css'
-// SNSリンクを使用する
-import SNSLink from '../../../components/SNSLink.astro'
+// プロフィールを使用する
 import Profile from '../../../components/Profile.astro'
 
 export async function getStaticPaths() {
@@ -73,7 +72,6 @@ const currentTag = posts[0].Tags.find((t) => t.name === tag)
 
   <div slot="aside" class={styles.aside}>
     <Profile isLargeSize={true}/>
-    <SNSLink heading="Twitterはじめました！" />
     <BlogPostsLink heading="Recommended" posts={rankedPosts} />
     <BlogTagsLink heading="タグ一覧" tags={tags} />
   </div>

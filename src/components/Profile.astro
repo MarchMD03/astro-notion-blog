@@ -1,5 +1,6 @@
 ---
 import { getStaticFilePath } from '../lib/blog-helpers.ts'
+import '../styles/font.css'
 
 // const iconImage = new URL(getStaticFilePath('/icon_hiyoko.png'), Astro.site)
 
@@ -17,7 +18,11 @@ const { isLargeSize } = Astro.props
           <img src="/icon_hiyoko.png" alt="icon">
       </div>
       <div class="profile-content">
-        <p>ま〜ち │ Webエンジニア</p>
+        <p>＼エンジニアのお友達を募集中😊／</p>
+        <div class="sns-link">
+            <p>ま〜ち │ Webエンジニア</p>
+            <a class="twitter-link" href="https://twitter.com/rakuraku_eng"><span class="fa-twitter"></span></a>
+        </div>
         <p>初心者に寄り添った説明を心がけています✨</p>
       </div>
   </div>
@@ -70,6 +75,35 @@ const { isLargeSize } = Astro.props
   right: 0;
   bottom: 0;
   margin: auto;
+}
+
+.sns-link{
+    display: flex;
+}
+.twitter-link{
+    position:relative;
+    display: inline-block;
+    width: 30px;
+    height: 30px;
+    margin:0 5px;
+}
+.twitter-link:hover {
+    /* background-color: #ddd; */
+    opacity: 0.7;
+    color: #fff;
+    transition: all 0.3s ease-in-out;
+}
+.twitter-link span{
+    display: inline-block;
+    width:100%;
+    height:100%;
+    color:#1da1f2;
+}
+.twitter-link span::before{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
 }
 
 .large-icon{

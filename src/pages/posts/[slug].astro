@@ -29,8 +29,7 @@ import styles from '../../styles/blog.module.css'
 import PostFeaturedImage from '../../components/PostFeaturedImage.astro'
 // 目次（自作）を使用
 import ContentList from '../../components/ContentList.astro'
-// SNSリンクを使用する
-import SNSLink from '../../components/SNSLink.astro'
+// プロフィールを使用する
 import Profile from '../../components/Profile.astro'
 
 export async function getStaticPaths() {
@@ -124,7 +123,6 @@ if (post.FeaturedImage && post.FeaturedImage.Url) {
 
   <div slot="aside" class={styles.aside}>
     <Profile isLargeSize={false}/>
-    <SNSLink heading="Twitterはじめました！" />
 
     {// 目次}
     <ContentList blocks={blocks} />
