@@ -20,7 +20,7 @@ const { isLargeSize } = Astro.props
       </div>
       <div class="profile-content">
         <p>ま〜ち │ Webエンジニア</p>
-        <p>初心者に寄り添った説明を心がけています✨</p>
+        <p class="subtext">初心者に寄り添った説明を心がけています✨</p>
         <p class="friend">＼エンジニアのお友達を募集中😊／</p>
         <SNSLink />
       </div>
@@ -59,6 +59,9 @@ const { isLargeSize } = Astro.props
   color: #3F3F3F;
 }
 
+.profile-content p.subtext{
+  font-size: 0.8rem;
+}
 .profile-content p.friend{
   margin-top: 30px;
   text-align: center;
