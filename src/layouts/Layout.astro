@@ -370,6 +370,9 @@ const asidePaddingTop = '20px'
       position: relative;
       float: left;
   }
+  .menu-item + .menu-item{
+    border-left: 1px solid #efefef;
+  }
   .main-menu>li>a{
     list-style: none;
     font-style: normal;
@@ -388,6 +391,25 @@ const asidePaddingTop = '20px'
     letter-spacing: 1px;
     font-weight: 700;
     margin-left: 0;
+  }
+  .main-menu>li>a::after{
+    content: "";
+    width: 80%;
+    height: 2px;
+    border-radius: 1px;
+    background: #333;
+    position: absolute;
+    margin: auto;
+    left: 0;
+    right: 0;
+    bottom: 10px;
+    opacity: 0;
+    transform: translate3d(0, 100%, 0);
+    transition: color 0.3s ease, background 0.3s ease, transform 0.3s ease, opacity 0.3s ease, border 0.3s ease, padding 0.3s ease, left 0.3s ease, bottom 0.3s ease, box-shadow 0.3s ease;
+  }
+  .main-menu>li>a:hover::after{
+    opacity: 1;
+    transform: translate3d(0, -5px, 0);
   }
 
   main footer {
