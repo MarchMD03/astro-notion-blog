@@ -248,9 +248,14 @@ const asidePaddingTop = '20px'
   div.cover img {
     display: block;
     width: 100%;
-    height: 20vh;
+    height: 310px;
     object-fit: cover;
     object-position: center 60%;
+  }
+  @media (max-width: 640px) {
+    div.cover img {
+      height: 200px;
+    }
   }
 
   div.content {
