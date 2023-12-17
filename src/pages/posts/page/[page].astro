@@ -18,8 +18,8 @@ import Pagination from '../../../components/Pagination.astro'
 import BlogPostsLink from '../../../components/BlogPostsLink.astro'
 import BlogTagsLink from '../../../components/BlogTagsLink.astro'
 import styles from '../../../styles/blog.module.css'
-// SNSリンクを使用する
-import SNSLink from '../../../components/SNSLink.astro'
+// プロフィールを使用する
+import Profile from '../../../components/Profile.astro'
 
 export async function getStaticPaths() {
   const numberOfPages = await getNumberOfPages()
@@ -73,7 +73,7 @@ const [posts, rankedPosts, tags, numberOfPages] = await Promise.all([
   </div>
 
   <div slot="aside" class={styles.aside}>
-    <SNSLink heading="Twitterはじめました！" />
+    <Profile isLargeSize={true}/>
     <BlogPostsLink heading="Recommended" posts={rankedPosts} />
     <BlogTagsLink heading="タグ一覧" tags={tags} />
   </div>
