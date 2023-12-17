@@ -3,6 +3,7 @@ import type { SelectProperty } from '../lib/interfaces.ts'
 import { getTagLink } from '../lib/blog-helpers.ts'
 import NoContents from './NoContents.astro'
 import '../styles/notion-color.css'
+import { PARENT_CATEGORY_COLOR } from '../config';
 
 export interface Props {
   heading: string
@@ -18,13 +19,13 @@ let categoryParentChild: { [key: string]: any[] } = {};
 
 // 親カテゴリーを抽出
 tags.forEach((category) => {
-  if (category.color === 'red') {
+  if (category.color === PARENT_CATEGORY_COLOR) {
     categoryParentChild[category.name] = [];
   }
 });
 // 子カテゴリーを抽出
 tags.forEach((category) => {
-  if (category.color !== 'red') {
+  if (category.color !== PARENT_CATEGORY_COLOR) {
     const parentCategory = category.name.split('（')[0]; // 親カテゴリー名を取得
     // 親カテゴリーが存在する場合
     if (categoryParentChild[parentCategory]) {
@@ -111,7 +112,7 @@ tags.forEach((category) => {
     //   <ul>
     //     { 
     //       Object.keys(tagsOrderByColor).map((color: string) => (
-    //         color !== 'red' && (
+    //         color !== PARENT_CATEGORY_COLOR && (
     //           tagsOrderByColor[color].map((tag: SelectProperty) => (
     //           <li>
     //             <a href={getTagLink(tag.name)} class={`tag ${tag.color}`}>

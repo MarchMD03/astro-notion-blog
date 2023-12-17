@@ -7,6 +7,7 @@ import GoogleAnalytics from '../components/GoogleAnalytics.astro'
 // タグ
 import type { SelectProperty } from '../lib/interfaces.ts'
 import NoContents from '../components/NoContents.astro'
+import { PARENT_CATEGORY_COLOR } from '../config';
 
 export interface Props {
   title: string
@@ -141,7 +142,7 @@ const asidePaddingTop = '20px'
                 {
                   // 赤色のタグだけ表示
                   tags.map((tag: SelectProperty) => (
-                  tag.color === "red" ? (
+                  tag.color === PARENT_CATEGORY_COLOR ? (
                   <li class="menu-item">
                     <a href={getTagLink(tag.name)}>
                       {tag.name}
