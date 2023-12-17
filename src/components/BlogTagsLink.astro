@@ -85,7 +85,11 @@ tags.forEach((category) => {
         {Object.keys(categoryParentChild).map((parentCategory: string) => (
           categoryParentChild[parentCategory].length !== 0 &&
           <li>
-            <h3>{parentCategory}</h3>
+            <h3>
+              <a href={getTagLink(parentCategory)}>
+                {parentCategory}
+              </a>
+            </h3>
             <ul>
               {categoryParentChild[parentCategory].map((tag: SelectProperty) => (
                 <li>
