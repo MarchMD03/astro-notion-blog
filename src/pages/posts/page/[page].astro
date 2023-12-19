@@ -45,9 +45,9 @@ const [posts, rankedPosts, tags, numberOfPages] = await Promise.all([
 
 <Layout title={`Posts ${page}/${numberOfPages}`} path={`/posts/page/${page}`}>
   <div slot="main" class={styles.main}>
-    <header>
+    {/* <header>
       <div class="page-container">{page}/{numberOfPages}</div>
-    </header>
+    </header> */}
 
     {
       posts.length === 0 ? (
