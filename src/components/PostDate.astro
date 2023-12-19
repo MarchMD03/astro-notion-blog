@@ -4,18 +4,29 @@ import { getDateStr } from '../lib/blog-helpers.ts'
 
 export interface Props {
   post: Post
+  fontXL: boolean
 }
 
-const { post } = Astro.props
+const { post, fontXL = false } = Astro.props
+
+const divClass = fontXL ? 'font-xl' : ''
 ---
 
-<div class="post-date">
+<div class=`post-date ${divClass}`>
   {post.Date ? getDateStr(post.Date) : ''}
 </div>
 
 <style>
   .post-date {
     padding: 0 0 0.3rem;
+    font-size: 0.8rem;
+  }
+  .post-date.font-xl {
     font-size: 0.9rem;
+  }
+  @media (max-width: 640px) {
+    .post-date{
+      font-size: 0.7rem;
+    }
   }
 </style>

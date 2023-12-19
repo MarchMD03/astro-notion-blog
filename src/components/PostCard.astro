@@ -1,0 +1,51 @@
+---
+// 必要なpropsをインポートします
+import { Post } from '../lib/interfaces.ts'
+import PostFeaturedImage from '../components/PostFeaturedImage.astro'
+import PostTitle from '../components/PostTitle.astro'
+import PostDate from '../components/PostDate.astro'
+import { getPostLink } from '../lib/blog-helpers.ts'
+import styles from '../styles/blog.module.css'
+
+export interface Props {
+  post: Post
+}
+
+const { post } = Astro.props
+---
+
+<div class={`card ${styles.post}`} key={post.Slug}>
+  <a href={getPostLink(post.Slug)} class='card-link'>
+    <PostFeaturedImage post={post} isCard={true} />
+    {/* <PostTags post={post} /> */}
+    <div class='card-body'>
+      <PostTitle post={post} enableLink={false} />
+      <PostDate post={post} />
+    </div>
+    {/* <PostExcerpt post={post} /> */}
+    {/* <ReadMoreLink post={post} /> */}
+  </a>
+</div>
+
+<style>
+
+  .card {
+    width: calc(50% - var(--gap) / 2);
+    margin-bottom: 20px;
+    box-shadow: 3px 3px 3px #eee;
+  }
+  .card .card-link {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+  .card .card-body {
+    padding: 10px;
+    flex-grow: 1; /* 残りの高さを全部専有する */
+
+    /* タイトルと日付の間のスペースを開ける */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+</style>

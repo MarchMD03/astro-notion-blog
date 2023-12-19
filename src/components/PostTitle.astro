@@ -5,14 +5,16 @@ import { getPostLink } from '../lib/blog-helpers.ts'
 export interface Props {
   post: Post
   enableLink: boolean
+  fontXL: boolean
 }
 
-const { post, enableLink = true } = Astro.props
+const { post, enableLink = true, fontXL = false } = Astro.props
 
 let title = post.Title
+const fontXLClass = fontXL ? 'font-xl' : ''
 ---
 
-<h2 class="post-title">
+<h2 class=`post-title ${fontXLClass}`>
   {
     enableLink ? (
       <a href={getPostLink(post.Slug)}>
@@ -51,16 +53,23 @@ let title = post.Title
 </h2>
 
 <style>
+  .post-title.font-xl {
+    font-size: 2rem;
+    font-weight: 700;
+  }
   .post-title {
     margin: 0;
     padding: 0.2rem 0;
-    font-size: 2rem;
-    font-weight: 700;
     color: var(--fg);
   }
   .post-title a {
-    font-size: 1.6rem;
+    font-size: 1rem;
+    font-weight: normal;
+    line-height: 1;
     color: inherit;
+  }
+  .post-title.font-xl a {
+    font-size: 1.6rem;
   }
   .post-title span,
   .post-title img {
@@ -76,11 +85,18 @@ let title = post.Title
     vertical-align: sub;
   }
   @media (max-width: 640px) {
-    .post-title {
+    .post-title.font-xl {
       font-size: 1.4rem;
     }
-    .post-title a {
+    .post-title.font-xl a {
       font-size: 1.2rem;
     }
+    .post-title {
+      font-size: 0.8rem;
+    }
+    .post-title a {
+      font-size: 0.8rem;
+    }
+
   }
 </style>
