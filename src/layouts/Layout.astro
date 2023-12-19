@@ -195,7 +195,12 @@ const asidePaddingTop = '20px'
 
 <style define:vars={{ asidePaddingTop }}>
   .container {
+    max-width: calc( var(--main-width) + var(--aside-width) );
+    margin: 0 auto;
     display: flex;
+    justify-content: space-between;
+    gap: var(--gap-main);
+    padding: 20px;
     min-height: 100vh;
   }
   @media (max-width: 640px) {
@@ -206,15 +211,18 @@ const asidePaddingTop = '20px'
 
   main {
     flex: 1;
-    order: 2;
+    /* order: 2; */
     justify-content: space-between;
 
     /* はみ出さないように、幅を明示しておく。コードブロックなどの幅が広すぎるとはみ出すことがあるため。 */
-    width: calc( 100% - var(--aside-width) );
+    /* width: calc( 100% - var(--aside-width) ); */
+
+    max-width: var(--main-width);
+
   }
   @media (max-width: 640px) {
     main {
-      order: 1;
+      /* order: 1; */
 
       /* 幅を確保 */
       width: 100%;
@@ -222,20 +230,20 @@ const asidePaddingTop = '20px'
   }
 
   aside {
-    order: 1;
+    /* order: 1; */
     width: var(--aside-width);
-    padding: var(--asidePaddingTop) 20px 20px;
+    /* padding: var(--asidePaddingTop) 20px 20px; */
   }
   /* タブレットサイズで幅を調整 */
   @media (max-width: 1080px) {
     aside {
       width: calc( var(--aside-width) * 0.6 );
-      padding: var(--asidePaddingTop) 0px 0px;
+      /* padding: var(--asidePaddingTop) 0px 0px; */
     }
   }
   @media (max-width: 640px) {
     aside {
-      order: 2;
+      /* order: 2; */
       width: 100%;
       /* padding: 40px 20px 20px; */
     }
@@ -258,13 +266,13 @@ const asidePaddingTop = '20px'
 
   div.content {
     /* 間隔調整 */
-    padding: 20px 40px 20px 0px;
+    /* padding: 20px 40px 20px 0px; */
   }
   @media (max-width: 640px) {
     div.content {
       /* padding: 0 18px; */
       /* デザイン調整 */
-      padding: 0;
+      /* padding: 0; */
     }
   }
 
@@ -435,6 +443,7 @@ const asidePaddingTop = '20px'
     --gap-half: 0.5rem;
     --gap: 1rem;
     --gap-double: 2rem;
+    --gap-main: 30px;   /* メインとサイドバーの間隔 */
 
     --bg: #F1F1F1;
     /* 背景色変更 */
@@ -458,7 +467,8 @@ const asidePaddingTop = '20px'
     --font-mono: SFMono-Regular, Menlo, Consolas, 'PT Mono', 'Liberation Mono',
       Courier, monospace;
 
-    --aside-width: 500px;   /* サイドバーの幅 */
+    --main-width: 820px;   /* メインの幅 */
+    --aside-width: 300px;   /* サイドバーの幅 */
   }
 
   * {
