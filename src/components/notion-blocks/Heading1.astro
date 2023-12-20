@@ -37,7 +37,7 @@ const id = buildHeadingId(block.Heading1)
     //   </div>
     // </details>
     <a href={`#${id}`} id={id}>
-      <h4 class="fa-pencil">
+      <h4 class="fa-pencil" data-section={id}>
         {block.Heading1.RichTexts.map((richText: interfaces.RichText) => (
           <RichText richText={richText} />
         ))}
@@ -50,7 +50,7 @@ const id = buildHeadingId(block.Heading1)
     </div>
   ) : (
     <a href={`#${id}`} id={id}>
-      <h4 class="fa-pencil">
+      <h4 class="fa-pencil" data-section={id}>
         {block.Heading1.RichTexts.map((richText: interfaces.RichText) => (
           <RichText richText={richText} />
         ))}

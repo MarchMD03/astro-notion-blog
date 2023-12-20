@@ -216,3 +216,36 @@ const { blocks } = Astro.props
     
   }
 </style>
+
+<script type="module">
+  // DOMが完全に読み込まれた後に実行
+  document.addEventListener('DOMContentLoaded', (event) => {
+    // 本文内のすべてのh4, h5セクションを選択（目次に使う見出し）
+    const sections = document.querySelectorAll('main h4, main h5')
+    // 目次内のすべてのリスト項目を選択（目次の見出し）
+    const navLinks = document.querySelectorAll('.content-list ul li');
+
+    // IntersectionObserverのコールバック関数
+    // 要素がビューポートに入るか出るかを監視
+    const observer = new IntersectionObserver((entries, observer) => {
+      entries.forEach(entry => {
+        // 要素がビューポートに入った場合 かつ 画面上端に触れたとき
+        if (entry.isIntersecting && entry.boundingClientRect.top <= 0) {
+          // すべてのリスト項目からアクティブクラスを削除
+          navLinks.forEach(navLink => {
+            navLink.classList.remove('active');
+            // リンクのhref属性が現在のセクションIDと一致する場合、アクティブクラスを追加
+            if (entry.target.getAttribute('data-section') === navLink.querySelector('a').getAttribute('href').substring(1)) {
+              navLink.classList.add('active');
+            }
+          });
+        }
+      });
+    }, { threshold: [0, 1] }); // ここで閾値を設定（セクションがビューポートに入り始めた瞬間（0%表示された時）と、完全にビューポート内に収まった時（100%表示された時）の両方で発火）
+
+    // 各セクションをIntersectionObserverに登録
+    sections.forEach(section => {
+      observer.observe(section);
+    });
+  });
+</script>
