@@ -125,7 +125,9 @@ if (post.FeaturedImage && post.FeaturedImage.Url) {
     <Profile isLargeSize={false}/>
 
     {// 目次}
-    <ContentList blocks={blocks} />
+    <div class={styles.stickyBox}>
+      <ContentList blocks={blocks} />
+    </div>
 
     <!--
       <BlogPostsLink

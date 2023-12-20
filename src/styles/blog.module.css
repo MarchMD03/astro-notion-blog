@@ -16,19 +16,30 @@
 
 .aside{
   /* デザイン調整（メインと合わせる） */
-  background: var(--main-add-1);
-  box-shadow: var(--box-shadow);
-  padding: 2vw;
+  /* padding: 2vw; */
 
   /* 固定 */
-  margin-bottom:50px;
+  /* margin-bottom:50px;
   position: sticky;
   position: -webkit-sticky;
-  top: var(--asidePaddingTop);
+  top: var(--asidePaddingTop); */
 
   /* スクロール */
-  overflow:auto;  /*スクロール機能*/
-	height: 100vh; /* 目次の高さ上限*/
+  /* overflow:auto; */  /*スクロール機能*/
+	/* height: 100vh; */ /* 目次の高さ上限*/
+
+  /* 見出しごとに塊を分ける */
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+
+  /* 目次の固定表示（sticky）を実現するため親要素は高さが必要 */
+  height: 100%;
+}
+.aside > *{
+  padding: 20px;
+  background: var(--main-add-1);
+  box-shadow: var(--box-shadow);
 }
 .aside h2{
   margin: 0;
@@ -56,6 +67,29 @@
 }
 .aside p{
   font-size: 0.9rem;
+}
+/* 固定表示（目次で使用） */
+.stickyBox{
+  /* サイドバー直下すべてに適用されるスタイルを無効にする */
+  padding: 0;
+  background: none;
+  box-shadow: none;
+
+  /* 固定表示 */
+  position: sticky;
+  top: 0;
+  padding-top: 1rem;
+}
+.stickyBox .stickyInner{
+  /* 目次 */
+  padding: 20px;
+  background: var(--main-add-1);
+  box-shadow: var(--box-shadow);
+  overflow-x: hidden;
+
+  /* 目次の数が多くて溢れたときにスクロールバーを表示する */
+  height: 90vh;
+  overflow-y: auto;
 }
 /* Macでもスクロールバーが表示されるようにする */
 ::-webkit-scrollbar {

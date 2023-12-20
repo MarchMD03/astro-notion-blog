@@ -24,6 +24,7 @@ import { Block } from '../lib/interfaces.ts'
 import * as interfaces from '../lib/interfaces.ts'
 import { buildHeadingId } from '../lib/blog-helpers.ts'
 import { snakeToKebab } from '../lib/style-helpers.ts'
+import styles from '../styles/blog.module.css'
 
 export interface Props {
   blocks: Block[]
@@ -33,40 +34,40 @@ const { blocks } = Astro.props
 
 ---
 
-<div class="content-list">
-  <h3>目次</h3>
+<div class={`content-list ${styles.stickyInner}`}>
+  <h2>目次</h2>
   {
     blocks.length === 0 ? (
       <NoContents contents={'目次なし'} />
     ) : (
-      <ul>
+      <ul class="ul-depth-1">
         {
           // 全ブロックから「見出し1」「見出し2」を目次に使う（ただし対象はトグルの1階層目まで）
           blocks.map((Block: interfaces.Block) =>{
             const heading = Block.Heading1 || Block.Heading2/* || Block.Heading3*/
-            let indentClass = ''
+            let depthClass = ''
             // 見出しブロックの場合
             if (heading) {
               // 見出しにインデントを付ける
               if (Block.Type === 'heading_2') {
-                indentClass = 'indent-1'
+                depthClass = 'depth-2'
               } 
-              // else if (Block.Type === 'heading_3') {
-              //   indentClass = 'indent-2'
-              // }
+              else{
+                depthClass = 'depth-1'
+              }
             
               // 一番上の階層の見出しを取得
               let ret = [
-                <div>
+                <li class={depthClass}>
                   <a
                     href={`#${buildHeadingId(heading)}`}
-                    class={`table-of-contents blue} ${indentClass}`}
+                    class={`table-of-contents blue}`}
                   >
                     {heading.RichTexts.map(
                       (richText: interfaces.RichText) => richText.PlainText
                     ).join('')}
                   </a>
-                </div>
+                </li>
               ]
 
               // 子ブロックがある場合（トグル見出しの場合）
@@ -74,29 +75,29 @@ const { blocks } = Astro.props
                 // 子ブロックから「見出し1」「見出し2」を目次に使う（ただし対象はトグルの1階層目まで）
                 heading.Children.map((child_Block: interfaces.Block) =>{
                   const child_heading = child_Block.Heading1 || child_Block.Heading2/* || child_Block.Heading3*/
-                  let child_indentClass = ''
+                  let depthClass = ''
                   // 見出しブロックの場合
                   if (child_heading) {
                     // 見出しにインデントを付ける
                     if (child_Block.Type === 'heading_2') {
-                      child_indentClass = 'indent-1'
+                      depthClass = 'depth-2'
                     }
-                    // else if (child_Block.Type === 'heading_3') {
-                    //   child_indentClass = 'indent-2'
-                    // }
+                    else{
+                      depthClass = 'depth-1'
+                    }
 
                     // トグルの1階層目の見出しを取得
                     ret.push(
-                      <div>
+                      <li class={depthClass}>
                         <a
                           href={`#${buildHeadingId(child_heading)}`}
-                          class={`table-of-contents blue} ${child_indentClass}`}
+                          class={`table-of-contents blue}`}
                         >
                           {child_heading.RichTexts.map(
                             (richText: interfaces.RichText) => richText.PlainText
                           ).join('')}
                         </a>
-                      </div>
+                      </li>
                     )
                   }
                 });
@@ -116,13 +117,102 @@ const { blocks } = Astro.props
 </div>
 
 <style>
-  a.indent-1 {
-    padding-left: 1.5rem;
+  .ul-depth-1{
+    position: relative;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    font-size: 0.9rem;
+    line-height: 1.5;
   }
-  a.indent-2 {
-    padding-left: 3rem;
+  .ul-depth-1::before {
+    position: absolute;
+    top: 17px;
+    bottom: 8px;
+    left: 5px;
+    width: 2px;
+    content: "";
+    background: var(--accents-add-1);
+    border-radius: 0 0 5px 5px;
+  }
+  /* 全見出し共通 */
+  .ul-depth-1 li{
+    position: relative;
+    padding-left: 21px;
+    margin-top: 5px;
+    font-weight: 700;
+  }
+  .ul-depth-1 li::before{
+    position: absolute;
+    content: "";
+    border-radius: 99rem;
+    box-sizing: border-box;
+  }
+
+  /* 見出し1 */
+  .ul-depth-1 li.depth-1 {
+    /* position: relative;
+    padding-left: 21px;
+    margin-top: 5px;
+    font-weight: 700; */
+  }
+  .ul-depth-1 li.depth-1::before {
+    top: 4px;
+    left: 0;
+    width: 12px;
+    height: 12px;
+    background: #b0d3f9;
+    border: 2px solid #fff;
+  }
+  .ul-depth-1 li.depth-1.active::before{
+    background: #3EA8FF;
+    border-color: #e0efff;
+  }
+
+  /* 見出し2 */
+  .ul-depth-1 li.depth-2 {
+    /* position: relative;
+    padding-left: 21px;
+    margin-top: 5px;
+    font-weight: 700; */
+    font-weight: 400;
+  }
+  .ul-depth-1 li.depth-2::before {
+    top: 6px;
+    left: 2px;
+    width: 8px;
+    height: 8px;
+    background: #d9eafb;
+    border: 2px solid #fff;
+  }
+  .ul-depth-1 li.depth-2.active::before{
+    background: #3EA8FF;
+    border-color: #3EA8FF;
+  }
+
+  .ul-depth-1 li a{
+    position: relative;
+    display: block;
+    max-height: 3.05em;
+    margin: 10px 0;
+    overflow: hidden;
+    color: var(--accents-1);
+    transition: none;
+
+    /* 3行以上の場合は...で省略 */
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    display: -webkit-box;
+  }
+  .ul-depth-1 li.depth-1 a {
+    /* padding-left: 1.5rem; */
+  }
+  .ul-depth-1 li.depth-2 a {
+    /* padding-left: 3rem; */
   }
   .content-list {
-    margin-bottom: 80px;
+  }
+  .ul-depth-1 {
+    
   }
 </style>
