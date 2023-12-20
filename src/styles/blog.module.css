@@ -89,7 +89,7 @@
   overflow-x: hidden;
 
   /* 目次の数が多くて溢れたときにスクロールバーを表示する */
-  height: 90vh;
+  max-height: 90vh;
   overflow-y: auto;
 }
 /* Macでもスクロールバーが表示されるようにする */
