@@ -33,6 +33,9 @@ const { post } = Astro.props
     width: calc(50% - var(--gap) / 2);
     margin-bottom: 20px;
     box-shadow: 3px 3px 3px #eee;
+
+    /* ホバー時の拡大で画像がはみ出た部分を隠す */
+    overflow: hidden;
   }
   .card .card-link {
     display: flex;
@@ -47,5 +50,12 @@ const { post } = Astro.props
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+  }
+  /* リンクホバー時にサムネイルを拡大 */
+  .card .card-link :global( .post-featured-image img ) {
+    transition: transform 0.3s ease;
+  }
+  .card .card-link:hover :global( .post-featured-image img ) {
+    transform: scale(1.15);
   }
 </style>
