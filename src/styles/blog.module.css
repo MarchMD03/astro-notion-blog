@@ -81,7 +81,7 @@
   top: 0;
   padding-top: 1rem;
 }
-.stickyBox .stickyInner{
+.stickyBox > *{
   /* 目次 */
   padding: 20px;
   background: var(--main-add-1);
