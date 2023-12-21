@@ -9,9 +9,10 @@ import styles from '../styles/blog.module.css'
 
 export interface Props {
   post: Post
+  fontXL: boolean
 }
 
-const { post } = Astro.props
+const { post, fontXL = false } = Astro.props
 ---
 
 <div class={`card ${styles.post}`} key={post.Slug}>
@@ -19,7 +20,7 @@ const { post } = Astro.props
     <PostFeaturedImage post={post} isCard={true} />
     {/* <PostTags post={post} /> */}
     <div class='card-body'>
-      <PostTitle post={post} enableLink={false} />
+      <PostTitle post={post} enableLink={false} fontXL={fontXL} />
       <PostDate post={post} />
     </div>
     {/* <PostExcerpt post={post} /> */}
