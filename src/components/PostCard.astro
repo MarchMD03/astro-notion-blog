@@ -31,7 +31,7 @@ const { post, fontXL = false } = Astro.props
 <style>
 
   .card {
-    width: calc(50% - var(--gap) / 2);
+    width: calc(50% - var(--gap) / 2); /* PostCardsで指定している幅が優先される */
     margin-bottom: 20px;
     box-shadow: 3px 3px 3px #eee;
 

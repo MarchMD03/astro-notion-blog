@@ -5,12 +5,13 @@ import PostCard from '../components/PostCard.astro'
 
 export interface Props {
   posts: Post[]
+  columnCount: number // 横並びの数
 }
 
-const { posts } = Astro.props
+const { posts, columnCount = 2 } = Astro.props
 ---
 
-<div class='card-wrapper'>
+<div class='card-wrapper' style={`--column-count: ${columnCount}`}>
 {
   posts.length === 0 ? (
     <NoContents contents={posts} />
@@ -29,5 +30,9 @@ const { posts } = Astro.props
     flex-wrap: wrap;
     justify-content: space-between;
     gap: var(--gap);
+  }
+  .card-wrapper > :global(.card) {
+    /* columnCountの数に合わせて動的に幅を決める */
+    width: calc( ( 100% / var(--column-count) ) - ( var(--gap) * (var(--column-count) - 1) / var(--column-count) ) );
   }
 </style>
