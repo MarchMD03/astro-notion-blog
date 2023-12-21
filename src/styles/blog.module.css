@@ -5,15 +5,6 @@
   padding: 2vw;
 }
 
-/* 一覧ページの投稿カード */
-.cardWrapper{
-  width: 100%;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  gap: var(--gap);
-}
-
 .aside{
   /* デザイン調整（メインと合わせる） */
   /* padding: 2vw; */

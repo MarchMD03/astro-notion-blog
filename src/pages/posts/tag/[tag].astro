@@ -23,7 +23,7 @@ import '../../../styles/notion-color.css'
 // プロフィールを使用する
 import Profile from '../../../components/Profile.astro'
 // 投稿カード
-import PostCard from '../../../components/PostCard.astro'
+import PostCards from '../../../components/PostCards.astro'
 
 export async function getStaticPaths() {
   const allTags = await getAllTags()
@@ -54,13 +54,7 @@ const currentTag = posts[0].Tags.find((t) => t.name === tag)
       posts.length === 0 ? (
         <NoContents contents={posts} />
       ) : (
-        <div class={styles.cardWrapper}>
-          {
-            posts.map((post) => (
-              <PostCard post={post} />
-            ))
-          }
-        </div>
+        <PostCards posts={posts} />
       )
     }
 

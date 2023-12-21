@@ -21,7 +21,7 @@ import styles from '../../../styles/blog.module.css'
 // プロフィールを使用する
 import Profile from '../../../components/Profile.astro'
 // 投稿カード
-import PostCard from '../../../components/PostCard.astro'
+import PostCards from '../../../components/PostCards.astro'
 
 export async function getStaticPaths() {
   const numberOfPages = await getNumberOfPages()
@@ -53,13 +53,7 @@ const [posts, rankedPosts, tags, numberOfPages] = await Promise.all([
       posts.length === 0 ? (
         <NoContents contents={posts} />
       ) : (
-        <div class={styles.cardWrapper}>
-          {
-            posts.map((post) => (
-              <PostCard post={post} />
-            ))
-          }
-        </div>
+        <PostCards posts={posts} />
       )
     }
 

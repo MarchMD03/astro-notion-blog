@@ -1,0 +1,33 @@
+---
+import { Post } from '../lib/interfaces.ts'
+import NoContents from '../components/NoContents.astro'
+import PostCard from '../components/PostCard.astro'
+
+export interface Props {
+  posts: Post[]
+}
+
+const { posts } = Astro.props
+---
+
+<div class='card-wrapper'>
+{
+  posts.length === 0 ? (
+    <NoContents contents={posts} />
+  ) : (
+    posts.map((post: Post) => (
+      <PostCard post={post} />
+    ))
+  )
+}
+</div>
+
+<style>
+  .card-wrapper {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: var(--gap);
+  }
+</style>
