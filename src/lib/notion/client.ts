@@ -53,6 +53,7 @@ import type {
 } from '../interfaces'
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 import { Client, APIResponseError } from '@notionhq/client'
+import { PARENT_CATEGORY_COLOR } from '../../config';
 
 const client = new Client({
   auth: NOTION_API_SECRET,
@@ -129,6 +130,17 @@ export async function getAllPosts(): Promise<Post[]> {
   postsCache = results
     .filter((pageObject) => _validPageObject(pageObject))
     .map((pageObject) => _buildPost(pageObject))
+    // メインカテゴリーが先頭に来るようにタグを並べ替え
+    .map((post) => {
+      // タグを取得
+      const tags = post.Tags;
+  
+      // メインカテゴリーが先頭に来るように並び替え
+      tags.sort((a, b) => (a.color === PARENT_CATEGORY_COLOR ? -1 : b.color === PARENT_CATEGORY_COLOR ? 1 : 0));
+  
+      // 並び替えたタグを持つ新しいPostオブジェクトを返す
+      return { ...post, Tags: tags };
+    });
   return postsCache
 }
 
