@@ -43,6 +43,31 @@ const { heading, posts, columnCount = 2 } = Astro.props
     padding-left: 0.4rem;
     color: #777;
     font-size: 0.95rem; */
+    margin: 0;
+    padding-left: 0.4rem;
+    color: #777;
+    font-size: 1.5rem;
+    font-weight: 700;
+    position: relative;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+  .blog-posts-link h2::before{
+    border-bottom: 1px solid #E5E5E5;
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+  }
+  .blog-posts-link h2::after{
+    border-bottom: 1px solid #a3c68c;
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 25%;
+    width: 50%;
   }
   .blog-posts-link ul {
     list-style-type: none;
