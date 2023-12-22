@@ -1,37 +1,55 @@
 ---
 /**
- * 投稿のリンク（カード型）
+ * 投稿のリンク（アイコンとタイトルだけ）
  */
+
 import { Post } from '../lib/interfaces.ts'
 import { getPostLink } from '../lib/blog-helpers.ts'
 import NoContents from './NoContents.astro'
-// 投稿カード
-import PostCard from '../components/PostCard.astro'
-import styles from '../styles/blog.module.css'
 
 export interface Props {
   heading: string
   posts: Post[]
-  columnCount: number
 }
 
-const { heading, posts, columnCount = 2 } = Astro.props
+const { heading, posts } = Astro.props
 ---
+
   {
     posts.length === 0 ? (
       // <NoContents contents={posts} />
       null // 処理が空になるのでnullを返す（上記コメントを残しておきたい）
     ) : (
-      <div class="blog-posts-link">
-        <h2>{heading}</h2>
-        <div class='card-wrapper' style={`--column-count: ${columnCount}`}>
-          {
-            posts.map((post: Post) => (
-              <PostCard post={post} fontXL={false} />
-            ))
-          }
-        </div>
-      </div>
+    <div class="blog-posts-link">
+    <h2>{heading}</h2>
+      <ul>
+        {posts.map((post: Post) => (
+          <li>
+            <a
+              href={getPostLink(post.Slug)}
+              title={`${post.Icon?.Emoji || ''}${post.Title}`}
+            >
+              {post.Icon && post.Icon.Type === 'emoji' ? (
+                <>
+                  <span>{post.Icon.Emoji}</span>
+                  {post.Title}
+                </>
+              ) : post.Icon && post.Icon.Type === 'external' ? (
+                <>
+                  <img
+                    src={post.Icon.Url}
+                    alt="Post title icon in a link list"
+                  />
+                  {post.Title}
+                </>
+              ) : (
+                post.Title
+              )}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
     )
   }
 
@@ -76,17 +94,4 @@ const { heading, posts, columnCount = 2 } = Astro.props
     height: 1.25rem;
     vertical-align: sub;
   }
-
-  .card-wrapper {
-    width: 100%;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    gap: var(--gap);
-  }
-  .card-wrapper > :global(.card) {
-    /* columnCountの数に合わせて動的に幅を決める */
-    width: calc( ( 100% / var(--column-count) ) - ( var(--gap) * (var(--column-count) - 1) / var(--column-count) ) );
-  }
-
 </style>
