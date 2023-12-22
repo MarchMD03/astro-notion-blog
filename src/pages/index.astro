@@ -38,7 +38,7 @@ const [posts, rankedPosts, tags, numberOfPages] = await Promise.all([
         <NoContents contents={posts} />
       ) : (
         <BlogPostsLink heading="人気記事" posts={rankedPosts} />
-        <BlogPostsLink heading="すべての記事" posts={posts} />
+        <BlogPostsLink heading="新着記事" posts={posts} />
       )
     }
 

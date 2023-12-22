@@ -51,7 +51,7 @@ const [posts, rankedPosts, tags, numberOfPages] = await Promise.all([
       posts.length === 0 ? (
         <NoContents contents={posts} />
       ) : (
-        <BlogPostsLink heading="すべての記事" posts={posts} />
+        <BlogPostsLink heading="新着記事" posts={posts} />
       )
     }
 
