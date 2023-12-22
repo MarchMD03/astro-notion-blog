@@ -39,6 +39,7 @@ const [posts, rankedPosts, tags, numberOfPages] = await Promise.all([
       posts.length === 0 ? (
         <NoContents contents={posts} />
       ) : (
+        <BlogPostsLink heading="人気記事" posts={rankedPosts} />
         <PostCards posts={posts} />
       )
     }
@@ -50,7 +51,6 @@ const [posts, rankedPosts, tags, numberOfPages] = await Promise.all([
 
   <div slot="aside" class={styles.aside}>
     <Profile isLargeSize={true}/>
-    <BlogPostsLink heading="人気記事" posts={rankedPosts} />
     <BlogTagsLink heading="タグ一覧" tags={tags} />
   </div>
 </Layout>
