@@ -15,7 +15,7 @@ export interface Props {
 const { post, fontXL = false } = Astro.props
 ---
 
-<div class={`card ${styles.post}`} key={post.Slug}>
+<div class='card' key={post.Slug}>
   <a href={getPostLink(post.Slug)} class='card-link'>
     <PostFeaturedImage post={post} isCard={true} />
     {/* <PostTags post={post} /> */}

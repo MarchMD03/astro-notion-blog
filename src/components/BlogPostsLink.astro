@@ -12,7 +12,7 @@ import styles from '../styles/blog.module.css'
 export interface Props {
   heading: string
   posts: Post[]
-  columnCount: number
+  columnCount: number // カラム数（5列以上を指定すると、子要素の数によっては最終行の余白が不自然になることがある）
 }
 
 const { heading, posts, columnCount = 2 } = Astro.props
@@ -49,6 +49,7 @@ const { heading, posts, columnCount = 2 } = Astro.props
     font-size: 1.5rem;
     font-weight: 700;
     position: relative;
+    padding-top: 10px;
     padding-bottom: 10px;
     margin-bottom: 20px;
     text-align: center;
@@ -108,6 +109,18 @@ const { heading, posts, columnCount = 2 } = Astro.props
     flex-wrap: wrap;
     justify-content: space-between;
     gap: var(--gap);
+  }
+  /* 最後の行を左寄せにするための対策 */
+  .card-wrapper::before {
+    display: block;
+    content:"";
+    order: 1;
+    width: calc( ( 100% / var(--column-count) ) - ( var(--gap) * (var(--column-count) - 1) / var(--column-count) ) );
+  }
+  .card-wrapper::after {
+    display: block;
+    content:"";
+    width: calc( ( 100% / var(--column-count) ) - ( var(--gap) * (var(--column-count) - 1) / var(--column-count) ) );
   }
   .card-wrapper > :global(.card) {
     /* columnCountの数に合わせて動的に幅を決める */
