@@ -40,7 +40,8 @@
   font-weight: 700;
   position: relative;
   padding-bottom: 10px;
-  margin-bottom: 20px
+  margin-bottom: 20px;
+  overflow: hidden;
 }
 .aside h2::before{
   border-bottom: 1px solid #a3c68c;
