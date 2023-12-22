@@ -4,6 +4,9 @@
   box-shadow: var(--box-shadow);
   padding: 2vw;
 }
+.main > *{
+  margin-bottom: 50px;
+}
 
 .aside{
   /* デザイン調整（メインと合わせる） */
