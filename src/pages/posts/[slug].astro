@@ -117,6 +117,13 @@ if (post.FeaturedImage && post.FeaturedImage.Url) {
 
       <footer>
         <!-- <PostRelativeLink prevPost={prevPost} nextPost={nextPost} /> -->
+        <BlogPostsLink
+          heading="関連記事"
+          posts={postsHavingSameTag.filter(
+            // 現在の記事は除外する
+            (p: interfaces.Post) => p.Slug !== post.Slug
+          )}
+        />
       </footer>
     </div>
   </div>
