@@ -455,11 +455,11 @@ const asidePaddingTop = '20px'
     --gap-double: 2rem;
     --gap-main: 30px; /* メインとサイドバーの間隔 */
 
-    --bg: #eff0e6;      /* 背景色（ベースカラー） */
-    
+    --bg: #fff; /* 背景色（コンテンツエリアのベースカラー）  */
+    --main: #eff0e6; /* 背景色（全体のベースカラー） */
+    --accents: #F2D280; /* メインカラー */
+
     --fg: #333;
-    --accents-add-1: #5c9ee7;     /* 独自追加 アクセントカラー1 */
-    --main-add-1: #fff;           /* 独自追加 メインカラー1 */
     --accents-1: #666; /* aタグで使われている */
     --accents-2: #666; /* 何も使われていない */
     --accents-3: #666; /* Todo, キャプションで使われている */
@@ -493,7 +493,7 @@ const asidePaddingTop = '20px'
 
   body {
     min-height: 100vh;
-    background: var(--bg);
+    background: var(--main);
     color: var(--fg);
     font-family: 'Zen Maru Gothic', serif, ui-sans-serif, -apple-system,
       BlinkMacSystemFont, 'Segoe UI', Helvetica, 'Hiragino Sans',

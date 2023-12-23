@@ -1,6 +1,6 @@
 /* デザイン調整 */
-.main{
-  background: var(--main-add-1);
+.main {
+  background: var(--bg);
   box-shadow: var(--box-shadow);
   padding: 2vw;
 }
@@ -32,7 +32,7 @@
 }
 .aside > * {
   padding: 20px;
-  background: var(--main-add-1);
+  background: var(--bg);
   box-shadow: var(--box-shadow);
 }
 .aside h2 {
@@ -53,9 +53,9 @@
   bottom: 0;
   width: 100%;
 }
-.aside h2::after{
-  border-bottom: 1px solid #E5E5E5;
-  content: "";
+.aside h2::after {
+  border-bottom: 1px solid #e5e5e5;
+  content: '';
   position: absolute;
   bottom: 0;
   width: 100%;
@@ -79,7 +79,7 @@
 .stickyBox > * {
   /* 目次 */
   padding: 20px;
-  background: var(--main-add-1);
+  background: var(--bg);
   box-shadow: var(--box-shadow);
   overflow-x: hidden;
 
