@@ -46,9 +46,9 @@
   margin-bottom: 20px;
   overflow: hidden;
 }
-.aside h2::before{
-  border-bottom: 1px solid #a3c68c;
-  content: "";
+.aside h2::before {
+  border-bottom: 1px solid var(--accents);
+  content: '';
   position: absolute;
   bottom: 0;
   width: 100%;
