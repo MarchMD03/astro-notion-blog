@@ -1,13 +1,18 @@
 ---
 import { PUBLIC_GA_TRACKING_ID, ENABLE_LIGHTBOX } from '../server-constants.ts'
-import { getDatabase, getAllTags/*タグ*/ } from '../lib/notion/client.ts'
-import { getNavLink, getStaticFilePath, filePath, getTagLink/*タグ*/ } from '../lib/blog-helpers.ts'
+import { getDatabase, getAllTags /*タグ*/ } from '../lib/notion/client.ts'
+import {
+  getNavLink,
+  getStaticFilePath,
+  filePath,
+  getTagLink /*タグ*/,
+} from '../lib/blog-helpers.ts'
 import '../styles/syntax-coloring.css'
 import GoogleAnalytics from '../components/GoogleAnalytics.astro'
 // タグ
 import type { SelectProperty } from '../lib/interfaces.ts'
 import NoContents from '../components/NoContents.astro'
-import { PARENT_CATEGORY_COLOR } from '../config';
+import { PARENT_CATEGORY_COLOR } from '../config'
 
 export interface Props {
   title: string
@@ -19,7 +24,7 @@ export interface Props {
 const { title = '', description = '', path = '/', ogImage = '' } = Astro.props
 
 // タグ取得
-let tags =await getAllTags()
+let tags = await getAllTags()
 
 const database = await getDatabase()
 
@@ -67,9 +72,12 @@ const asidePaddingTop = '20px'
     <title>{siteTitle}</title>
     <meta name="description" content={siteDescription} />
     <link rel="canonical" href={siteURL} />
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@300;400;500;700&display=swap"
+      rel="stylesheet"
+    />
     <meta property="og:url" content={siteURL} />
     <meta property="og:title" content={siteTitle} />
     <meta property="og:description" content={siteDescription} />
@@ -88,7 +96,7 @@ const asidePaddingTop = '20px'
   </head>
   <body>
     <GoogleAnalytics trackingId={PUBLIC_GA_TRACKING_ID} />
-  
+
     <header>
       <h1>
         <a href={getNavLink('/')}>
@@ -125,7 +133,7 @@ const asidePaddingTop = '20px'
       <div class="description">
         {database.Description}
       </div>
-      
+
       <!-- カテゴリー一覧追加 -->
       <div class="navigation">
         <div class="navigation-inner">
@@ -133,10 +141,10 @@ const asidePaddingTop = '20px'
             <div class="bar"></div>
             <div class="bar"></div>
             <div class="bar"></div>
-      
+
             <div class="clear"></div>
           </div>
-      
+
           {
             tags.length === 0 ? (
               <NoContents contents={tags} />
@@ -144,61 +152,59 @@ const asidePaddingTop = '20px'
               <ul class="main-menu">
                 {
                   // 赤色のタグだけ表示
-                  tags.map((tag: SelectProperty) => (
-                  tag.color === PARENT_CATEGORY_COLOR ? (
-                  <li class="menu-item">
-                    <a href={getTagLink(tag.name)}>
-                      {tag.name}
-                    </a>
-                  </li>
-                  ) : ( null )
-                ))}
+                  tags.map((tag: SelectProperty) =>
+                    tag.color === PARENT_CATEGORY_COLOR ? (
+                      <li class="menu-item">
+                        <a href={getTagLink(tag.name)}>{tag.name}</a>
+                      </li>
+                    ) : null
+                  )
+                }
               </ul>
             )
           }
           <!-- /main-menu -->
-      
+
           <a class="search-toggle" href="#"></a>
-      
+
           <div class="clear"></div>
         </div>
         <!-- /navigation-inner -->
       </div>
     </header>
-    
+
     <div class="container">
       <main>
         <div class="content">
           <slot name="main" />
 
-            <footer>
-              <div>
-                <span>Powered by</span>
-                <a href="https://github.com/otoyo/astro-notion-blog"
-                  >astro-notion-blog</a
-                >
-              </div>
-            </footer>
-          </div>
-        </main>
+          <footer>
+            <div>
+              <span>Powered by</span>
+              <a href="https://github.com/otoyo/astro-notion-blog"
+                >astro-notion-blog</a
+              >
+            </div>
+          </footer>
+        </div>
+      </main>
 
-        <aside>
-          <slot name="aside" />
-        </aside>
-      </div>
+      <aside>
+        <slot name="aside" />
+      </aside>
     </div>
-
-    {
-      ENABLE_LIGHTBOX && (
-        <script src={getStaticFilePath('/scripts/fslightbox.js')} />
-      )
-    }
   </body>
+
+  {
+    ENABLE_LIGHTBOX && (
+      <script src={getStaticFilePath('/scripts/fslightbox.js')} />
+    )
+  }
 </html>
 
 <style define:vars={{ asidePaddingTop }}>
   .container {
-    max-width: calc( var(--main-width) + var(--aside-width) );
+    max-width: calc(var(--main-width) + var(--aside-width));
     margin: 0 auto;
     display: flex;
     justify-content: space-between;
@@ -221,7 +227,6 @@ const asidePaddingTop = '20px'
     /* width: calc( 100% - var(--aside-width) ); */
 
     max-width: var(--main-width);
-
   }
   @media (max-width: 640px) {
     main {
@@ -240,7 +245,7 @@ const asidePaddingTop = '20px'
   /* タブレットサイズで幅を調整 */
   @media (max-width: 1080px) {
     aside {
-      width: calc( var(--aside-width) * 0.6 );
+      width: calc(var(--aside-width) * 0.6);
       /* padding: var(--asidePaddingTop) 0px 0px; */
     }
   }
@@ -319,7 +324,7 @@ const asidePaddingTop = '20px'
   }
 
   /* ヘッダーデザイン追加 */
-  .navigation{
+  .navigation {
     color: #444;
     font-size: 18px;
     box-sizing: border-box;
@@ -328,61 +333,61 @@ const asidePaddingTop = '20px'
     background-color: #fff;
     box-shadow: var(--box-shadow);
   }
-  .navigation-inner{
+  .navigation-inner {
     font-size: 18px;
     box-sizing: border-box;
     max-width: 90%;
     width: 1400px;
     margin: 0 auto;
   }
-  .nav-toggle{
+  .nav-toggle {
     font-size: 18px;
     box-sizing: border-box;
     display: none;
     float: left;
   }
-  .bar{
+  .bar {
     font-size: 18px;
     box-sizing: border-box;
-    transition: all .2s ease-in-out;
+    transition: all 0.2s ease-in-out;
   }
-  .clear{
-      font-size: 18px;
-      box-sizing: border-box;
-      clear: both;
+  .clear {
+    font-size: 18px;
+    box-sizing: border-box;
+    clear: both;
   }
-  .main-menu{
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      border: 0;
-      font-weight: 400;
-      font-style: normal;
-      line-height: 1;
-      font-family: inherit;
-      list-style: none;
-      font-size: .9em;
-      text-align: center;
+  .main-menu {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-weight: 400;
+    font-style: normal;
+    line-height: 1;
+    font-family: inherit;
+    list-style: none;
+    font-size: 0.9em;
+    text-align: center;
   }
-  .menu-item{
-      list-style: none;
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      border: 0;
-      font-weight: 400;
-      font-style: normal;
-      font-size: 100%;
-      line-height: 1;
-      font-family: inherit;
-      text-align: left;
-      position: relative;
-      float: left;
+  .menu-item {
+    list-style: none;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 100%;
+    line-height: 1;
+    font-family: inherit;
+    text-align: left;
+    position: relative;
+    float: left;
   }
-  .menu-item + .menu-item{
+  .menu-item + .menu-item {
     border-left: 1px solid #efefef;
   }
-  .main-menu>li>a{
+  .main-menu > li > a {
     list-style: none;
     font-style: normal;
     line-height: 1;
@@ -391,18 +396,18 @@ const asidePaddingTop = '20px'
     box-sizing: border-box;
     outline: none;
     text-decoration: none;
-    transition: all .2s ease-in-out;
+    transition: all 0.2s ease-in-out;
     display: block;
     padding: 27px;
-    font-size: .85em;
+    font-size: 0.85em;
     color: var(--fg);
     text-transform: uppercase;
     letter-spacing: 1px;
     font-weight: 700;
     margin-left: 0;
   }
-  .main-menu>li>a::after{
-    content: "";
+  .main-menu > li > a::after {
+    content: '';
     width: 80%;
     height: 2px;
     border-radius: 1px;
@@ -414,9 +419,11 @@ const asidePaddingTop = '20px'
     bottom: 10px;
     opacity: 0;
     transform: translate3d(0, 100%, 0);
-    transition: color 0.3s ease, background 0.3s ease, transform 0.3s ease, opacity 0.3s ease, border 0.3s ease, padding 0.3s ease, left 0.3s ease, bottom 0.3s ease, box-shadow 0.3s ease;
+    transition: color 0.3s ease, background 0.3s ease, transform 0.3s ease,
+      opacity 0.3s ease, border 0.3s ease, padding 0.3s ease, left 0.3s ease,
+      bottom 0.3s ease, box-shadow 0.3s ease;
   }
-  .main-menu>li>a:hover::after{
+  .main-menu > li > a:hover::after {
     opacity: 1;
     transform: translate3d(0, -5px, 0);
   }
@@ -446,17 +453,17 @@ const asidePaddingTop = '20px'
     --gap-half: 0.5rem;
     --gap: 1rem;
     --gap-double: 2rem;
-    --gap-main: 30px;   /* メインとサイドバーの間隔 */
+    --gap-main: 30px; /* メインとサイドバーの間隔 */
 
     --bg: #eff0e6;      /* 背景色（ベースカラー） */
     
     --fg: #333;
-    --accents-1: #666;      /* aタグで使われている */
-    --accents-2: #666;      /* 何も使われていない */
-    --accents-3: #666;      /* Todo, キャプションで使われている */
     --accents-add-1: #5c9ee7;     /* 独自追加 アクセントカラー1 */
     --main-add-1: #fff;           /* 独自追加 メインカラー1 */
-    --box-shadow: 0 2px 3px rgba(0,0,0,.1);   /* 独自追加 ボックスシャドウ */
+    --accents-1: #666; /* aタグで使われている */
+    --accents-2: #666; /* 何も使われていない */
+    --accents-3: #666; /* Todo, キャプションで使われている */
+    --box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1); /* 独自追加 ボックスシャドウ */
     --geist-foreground: #000;
     --geist-success: #690;
 
@@ -468,8 +475,8 @@ const asidePaddingTop = '20px'
     --font-mono: SFMono-Regular, Menlo, Consolas, 'PT Mono', 'Liberation Mono',
       Courier, monospace;
 
-    --main-width: 820px;   /* メインの幅 */
-    --aside-width: 300px;   /* サイドバーの幅 */
+    --main-width: 820px; /* メインの幅 */
+    --aside-width: 300px; /* サイドバーの幅 */
   }
 
   * {
@@ -488,10 +495,11 @@ const asidePaddingTop = '20px'
     min-height: 100vh;
     background: var(--bg);
     color: var(--fg);
-    font-family: 'Zen Maru Gothic', serif, ui-sans-serif, -apple-system, BlinkMacSystemFont, 'Segoe UI',
-      Helvetica, 'Hiragino Sans', 'Hiragino Kaku Gothic ProN',
-      'Hiragino Sans GB', メイリオ, Meiryo, 'Apple Color Emoji', Arial,
-      sans-serif, 'Segoe UI Emoji', 'Segoe UI Symbol';
+    font-family: 'Zen Maru Gothic', serif, ui-sans-serif, -apple-system,
+      BlinkMacSystemFont, 'Segoe UI', Helvetica, 'Hiragino Sans',
+      'Hiragino Kaku Gothic ProN', 'Hiragino Sans GB', メイリオ, Meiryo,
+      'Apple Color Emoji', Arial, sans-serif, 'Segoe UI Emoji',
+      'Segoe UI Symbol';
 
     /*background-image: radial-gradient(#ddd 1px, transparent 1px),
       radial-gradient(#ddd 1px, transparent 1px);*/

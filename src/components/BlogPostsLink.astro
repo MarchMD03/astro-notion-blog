@@ -17,23 +17,19 @@ export interface Props {
 
 const { heading, posts, columnCount = 2 } = Astro.props
 ---
-  {
-    posts.length === 0 ? (
-      // <NoContents contents={posts} />
-      null // 処理が空になるのでnullを返す（上記コメントを残しておきたい）
-    ) : (
-      <div class="blog-posts-link">
-        <h2>{heading}</h2>
-        <div class='card-wrapper' style={`--column-count: ${columnCount}`}>
-          {
-            posts.map((post: Post) => (
-              <PostCard post={post} fontXL={false} />
-            ))
-          }
-        </div>
+
+{
+  posts.length === 0 ? null : ( // <NoContents contents={posts} /> // 処理が空になるのでnullを返す（上記コメントを残しておきたい）
+    <div class="blog-posts-link">
+      <h2>{heading}</h2>
+      <div class="card-wrapper" style={`--column-count: ${columnCount}`}>
+        {posts.map((post: Post) => (
+          <PostCard post={post} fontXL={false} />
+        ))}
       </div>
-    )
-  }
+    </div>
+  )
+}
 
 <style>
   .blog-posts-link {
@@ -113,18 +109,26 @@ const { heading, posts, columnCount = 2 } = Astro.props
   /* 最後の行を左寄せにするための対策 */
   .card-wrapper::before {
     display: block;
-    content:"";
+    content: '';
     order: 1;
-    width: calc( ( 100% / var(--column-count) ) - ( var(--gap) * (var(--column-count) - 1) / var(--column-count) ) );
+    width: calc(
+      (100% / var(--column-count)) -
+        (var(--gap) * (var(--column-count) - 1) / var(--column-count))
+    );
   }
   .card-wrapper::after {
     display: block;
-    content:"";
-    width: calc( ( 100% / var(--column-count) ) - ( var(--gap) * (var(--column-count) - 1) / var(--column-count) ) );
+    content: '';
+    width: calc(
+      (100% / var(--column-count)) -
+        (var(--gap) * (var(--column-count) - 1) / var(--column-count))
+    );
   }
   .card-wrapper > :global(.card) {
     /* columnCountの数に合わせて動的に幅を決める */
-    width: calc( ( 100% / var(--column-count) ) - ( var(--gap) * (var(--column-count) - 1) / var(--column-count) ) );
+    width: calc(
+      (100% / var(--column-count)) -
+        (var(--gap) * (var(--column-count) - 1) / var(--column-count))
+    );
   }
-
 </style>

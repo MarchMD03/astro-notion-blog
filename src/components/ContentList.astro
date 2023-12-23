@@ -1,14 +1,14 @@
 ---
 /**
  * 独自追加ファイル
- * 
+ *
  * 目次を生成する
  * 目次の対象
  *    ページ直下->見出し1ブロック
  *    ページ直下->見出し2ブロック
  *    ページ直下->トグル見出し1ブロック
  *    ページ直下->トグル見出し2ブロック
- * 
+ *
  *    ページ直下->トグル見出し->見出し1ブロック
  *    ページ直下->トグル見出し->見出し2ブロック
  *    ページ直下->トグル見出し->トグル見出し1ブロック
@@ -31,7 +31,6 @@ export interface Props {
 }
 
 const { blocks } = Astro.props
-
 ---
 
 <div class={`content-list`}>
@@ -43,19 +42,19 @@ const { blocks } = Astro.props
       <ul class="ul-depth-1">
         {
           // 全ブロックから「見出し1」「見出し2」を目次に使う（ただし対象はトグルの1階層目まで）
-          blocks.map((Block: interfaces.Block) =>{
-            const heading = Block.Heading1 || Block.Heading2/* || Block.Heading3*/
+          blocks.map((Block: interfaces.Block) => {
+            const heading =
+              Block.Heading1 || Block.Heading2 /* || Block.Heading3*/
             let depthClass = ''
             // 見出しブロックの場合
             if (heading) {
               // 見出しにインデントを付ける
               if (Block.Type === 'heading_2') {
                 depthClass = 'depth-2'
-              } 
-              else{
+              } else {
                 depthClass = 'depth-1'
               }
-            
+
               // 一番上の階層の見出しを取得
               let ret = [
                 <li class={depthClass}>
@@ -67,22 +66,23 @@ const { blocks } = Astro.props
                       (richText: interfaces.RichText) => richText.PlainText
                     ).join('')}
                   </a>
-                </li>
+                </li>,
               ]
 
               // 子ブロックがある場合（トグル見出しの場合）
-              if ( Block.HasChildren && heading.Children ){
+              if (Block.HasChildren && heading.Children) {
                 // 子ブロックから「見出し1」「見出し2」を目次に使う（ただし対象はトグルの1階層目まで）
-                heading.Children.map((child_Block: interfaces.Block) =>{
-                  const child_heading = child_Block.Heading1 || child_Block.Heading2/* || child_Block.Heading3*/
+                heading.Children.map((child_Block: interfaces.Block) => {
+                  const child_heading =
+                    child_Block.Heading1 ||
+                    child_Block.Heading2 /* || child_Block.Heading3*/
                   let depthClass = ''
                   // 見出しブロックの場合
                   if (child_heading) {
                     // 見出しにインデントを付ける
                     if (child_Block.Type === 'heading_2') {
                       depthClass = 'depth-2'
-                    }
-                    else{
+                    } else {
                       depthClass = 'depth-1'
                     }
 
@@ -94,20 +94,21 @@ const { blocks } = Astro.props
                           class={`table-of-contents blue}`}
                         >
                           {child_heading.RichTexts.map(
-                            (richText: interfaces.RichText) => richText.PlainText
+                            (richText: interfaces.RichText) =>
+                              richText.PlainText
                           ).join('')}
                         </a>
                       </li>
                     )
                   }
-                });
+                })
               }
-              
-              return ret;
+
+              return ret
             }
             // 見出しでないブロックの場合
-            else{
-              return '';
+            else {
+              return ''
             }
           })
         }
@@ -117,7 +118,7 @@ const { blocks } = Astro.props
 </div>
 
 <style>
-  .ul-depth-1{
+  .ul-depth-1 {
     position: relative;
     list-style: none;
     padding: 0;
@@ -136,15 +137,15 @@ const { blocks } = Astro.props
     border-radius: 0 0 5px 5px;
   }
   /* 全見出し共通 */
-  .ul-depth-1 li{
+  .ul-depth-1 li {
     position: relative;
     padding-left: 21px;
     margin-top: 5px;
     font-weight: 700;
   }
-  .ul-depth-1 li::before{
+  .ul-depth-1 li::before {
     position: absolute;
-    content: "";
+    content: '';
     border-radius: 99rem;
     box-sizing: border-box;
   }
@@ -164,8 +165,8 @@ const { blocks } = Astro.props
     background: #b0d3f9;
     border: 2px solid #fff;
   }
-  .ul-depth-1 li.depth-1.active::before{
-    background: #3EA8FF;
+  .ul-depth-1 li.depth-1.active::before {
+    background: #3ea8ff;
     border-color: #e0efff;
   }
 
@@ -185,12 +186,12 @@ const { blocks } = Astro.props
     background: #d9eafb;
     border: 2px solid #fff;
   }
-  .ul-depth-1 li.depth-2.active::before{
-    background: #3EA8FF;
-    border-color: #3EA8FF;
+  .ul-depth-1 li.depth-2.active::before {
+    background: #3ea8ff;
+    border-color: #3ea8ff;
   }
 
-  .ul-depth-1 li a{
+  .ul-depth-1 li a {
     position: relative;
     display: block;
     max-height: 3.05em;
@@ -213,7 +214,6 @@ const { blocks } = Astro.props
   .content-list {
   }
   .ul-depth-1 {
-    
   }
 </style>
 
@@ -223,29 +223,35 @@ const { blocks } = Astro.props
     // 本文内のすべてのh4, h5セクションを選択（目次に使う見出し）
     const sections = document.querySelectorAll('main h4, main h5')
     // 目次内のすべてのリスト項目を選択（目次の見出し）
-    const navLinks = document.querySelectorAll('.content-list ul li');
+    const navLinks = document.querySelectorAll('.content-list ul li')
 
     // IntersectionObserverのコールバック関数
     // 要素がビューポートに入るか出るかを監視
-    const observer = new IntersectionObserver((entries, observer) => {
-      entries.forEach(entry => {
-        // 要素がビューポートに入った場合 かつ 画面上端に触れたとき
-        if (entry.isIntersecting && entry.boundingClientRect.top <= 0) {
-          // すべてのリスト項目からアクティブクラスを削除
-          navLinks.forEach(navLink => {
-            navLink.classList.remove('active');
-            // リンクのhref属性が現在のセクションIDと一致する場合、アクティブクラスを追加
-            if (entry.target.getAttribute('data-section') === navLink.querySelector('a').getAttribute('href').substring(1)) {
-              navLink.classList.add('active');
-            }
-          });
-        }
-      });
-    }, { threshold: [0, 1] }); // ここで閾値を設定（セクションがビューポートに入り始めた瞬間（0%表示された時）と、完全にビューポート内に収まった時（100%表示された時）の両方で発火）
+    const observer = new IntersectionObserver(
+      (entries, observer) => {
+        entries.forEach((entry) => {
+          // 要素がビューポートに入った場合 かつ 画面上端に触れたとき
+          if (entry.isIntersecting && entry.boundingClientRect.top <= 0) {
+            // すべてのリスト項目からアクティブクラスを削除
+            navLinks.forEach((navLink) => {
+              navLink.classList.remove('active')
+              // リンクのhref属性が現在のセクションIDと一致する場合、アクティブクラスを追加
+              if (
+                entry.target.getAttribute('data-section') ===
+                navLink.querySelector('a').getAttribute('href').substring(1)
+              ) {
+                navLink.classList.add('active')
+              }
+            })
+          }
+        })
+      },
+      { threshold: [0, 1] }
+    ) // ここで閾値を設定（セクションがビューポートに入り始めた瞬間（0%表示された時）と、完全にビューポート内に収まった時（100%表示された時）の両方で発火）
 
     // 各セクションをIntersectionObserverに登録
-    sections.forEach(section => {
-      observer.observe(section);
-    });
-  });
+    sections.forEach((section) => {
+      observer.observe(section)
+    })
+  })
 </script>

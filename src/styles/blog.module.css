@@ -4,11 +4,11 @@
   box-shadow: var(--box-shadow);
   padding: 2vw;
 }
-.main > *{
+.main > * {
   margin-bottom: 50px;
 }
 
-.aside{
+.aside {
   /* デザイン調整（メインと合わせる） */
   /* padding: 2vw; */
 
@@ -19,8 +19,8 @@
   top: var(--asidePaddingTop); */
 
   /* スクロール */
-  /* overflow:auto; */  /*スクロール機能*/
-	/* height: 100vh; */ /* 目次の高さ上限*/
+  /* overflow:auto; */ /*スクロール機能*/
+  /* height: 100vh; */ /* 目次の高さ上限*/
 
   /* 見出しごとに塊を分ける */
   display: flex;
@@ -30,16 +30,16 @@
   /* 目次の固定表示（sticky）を実現するため親要素は高さが必要 */
   height: 100%;
 }
-.aside > *{
+.aside > * {
   padding: 20px;
   background: var(--main-add-1);
   box-shadow: var(--box-shadow);
 }
-.aside h2{
+.aside h2 {
   margin: 0;
   padding-left: 0.4rem;
   color: #777;
-  font-size: 1.0rem;
+  font-size: 1rem;
   font-weight: 700;
   position: relative;
   padding-bottom: 10px;
@@ -60,12 +60,12 @@
   bottom: 0;
   width: 100%;
 }
-.aside p{
+.aside p {
   font-size: 0.9rem;
   line-height: 1.5;
 }
 /* 固定表示（目次で使用） */
-.stickyBox{
+.stickyBox {
   /* サイドバー直下すべてに適用されるスタイルを無効にする */
   padding: 0;
   background: none;
@@ -76,7 +76,7 @@
   top: 0;
   padding-top: 1rem;
 }
-.stickyBox > *{
+.stickyBox > * {
   /* 目次 */
   padding: 20px;
   background: var(--main-add-1);
@@ -94,10 +94,9 @@
 }
 ::-webkit-scrollbar-thumb {
 border-radius: 4px;
-background-color: rgba(0,0,0,.5);
-box-shadow: 0 0 1px rgba(255,255,255,.5);
+background-color: rgba(0, 0, 0, 0.5);
+box-shadow: 0 0 1px rgba(255, 255, 255, 0.5);
 }
-
 
 .main header {
   padding: 0 0 20px;
