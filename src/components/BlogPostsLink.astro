@@ -1,62 +1,79 @@
 ---
+/**
+ * 投稿のリンク（カード型）
+ */
 import { Post } from '../lib/interfaces.ts'
 import { getPostLink } from '../lib/blog-helpers.ts'
 import NoContents from './NoContents.astro'
+// 投稿カード
+import PostCard from '../components/PostCard.astro'
+import styles from '../styles/blog.module.css'
 
 export interface Props {
   heading: string
   posts: Post[]
+  columnCount: number // カラム数（5列以上を指定すると、子要素の数によっては最終行の余白が不自然になることがある）
+  more: boolean       // もっと見るボタンを表示するかどうか
+  moreLink: string    // もっと見るボタンのリンク先
 }
 
-const { heading, posts } = Astro.props
+const { heading, posts, columnCount = 2, more = false, moreLink = '' } = Astro.props
 ---
 
-  {
-    posts.length === 0 ? (
-      // <NoContents contents={posts} />
-      null // 処理が空になるのでnullを返す（上記コメントを残しておきたい）
-    ) : (
+{
+  posts.length === 0 ? null : ( // <NoContents contents={posts} /> // 処理が空になるのでnullを返す（上記コメントを残しておきたい）
     <div class="blog-posts-link">
-    <h2>{heading}</h2>
-      <ul>
+      <h2>{heading}</h2>
+      <div class="card-wrapper" style={`--column-count: ${columnCount}`}>
         {posts.map((post: Post) => (
-          <li>
-            <a
-              href={getPostLink(post.Slug)}
-              title={`${post.Icon?.Emoji || ''}${post.Title}`}
-            >
-              {post.Icon && post.Icon.Type === 'emoji' ? (
-                <>
-                  <span>{post.Icon.Emoji}</span>
-                  {post.Title}
-                </>
-              ) : post.Icon && post.Icon.Type === 'external' ? (
-                <>
-                  <img
-                    src={post.Icon.Url}
-                    alt="Post title icon in a link list"
-                  />
-                  {post.Title}
-                </>
-              ) : (
-                post.Title
-              )}
-            </a>
-          </li>
+          <PostCard post={post} fontXL={false} />
         ))}
-      </ul>
+      </div>
+      {
+        more && moreLink ? (
+          <a class="more-link" href={moreLink}>
+            もっと見る
+          </a>
+        ) : null
+      }
     </div>
-    )
-  }
+  )
+}
 
 <style>
   .blog-posts-link {
   }
   .blog-posts-link h2 {
+    /* margin: 0;
+    padding-left: 0.4rem;
+    color: #777;
+    font-size: 0.95rem; */
     margin: 0;
     padding-left: 0.4rem;
     color: #777;
-    font-size: 0.95rem;
+    font-size: 1.5rem;
+    font-weight: 700;
+    position: relative;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+  .blog-posts-link h2::before {
+    border-bottom: 1px solid #e5e5e5;
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+  }
+  .blog-posts-link h2::after {
+    border-bottom: 1px solid var(--accents);
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 25%;
+    width: 50%;
   }
   .blog-posts-link ul {
     list-style-type: none;
@@ -89,5 +106,52 @@ const { heading, posts } = Astro.props
     width: 1.25rem;
     height: 1.25rem;
     vertical-align: sub;
+  }
+
+  .card-wrapper {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: var(--gap);
+  }
+  /* 最後の行を左寄せにするための対策 */
+  .card-wrapper::before {
+    display: block;
+    content: '';
+    order: 1;
+    width: calc(
+      (100% / var(--column-count)) -
+        (var(--gap) * (var(--column-count) - 1) / var(--column-count))
+    );
+  }
+  .card-wrapper::after {
+    display: block;
+    content: '';
+    width: calc(
+      (100% / var(--column-count)) -
+        (var(--gap) * (var(--column-count) - 1) / var(--column-count))
+    );
+  }
+  .card-wrapper > :global(.card) {
+    /* columnCountの数に合わせて動的に幅を決める */
+    width: calc(
+      (100% / var(--column-count)) -
+        (var(--gap) * (var(--column-count) - 1) / var(--column-count))
+    );
+  }
+
+  .more-link{
+    display: block;
+    margin: 0 auto;
+    width: 200px;
+    text-align: center;
+    padding: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    color: var(--fg);
+    font-size: 1.2rem;
+    font-weight: 700;
+    text-decoration: none;
   }
 </style>

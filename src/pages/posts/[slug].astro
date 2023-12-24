@@ -15,6 +15,7 @@ import {
   getPostLink,
   filePath,
   extractTargetBlocks,
+  getTagLink,
 } from '../../lib/blog-helpers.ts'
 import Layout from '../../layouts/Layout.astro'
 import PostDate from '../../components/PostDate.astro'
@@ -31,6 +32,7 @@ import PostFeaturedImage from '../../components/PostFeaturedImage.astro'
 import ContentList from '../../components/ContentList.astro'
 // プロフィールを使用する
 import Profile from '../../components/Profile.astro'
+import SideLink from '../../components/SideLink.astro'
 
 export async function getStaticPaths() {
   const posts = await getAllPosts()
@@ -51,7 +53,7 @@ const [blocks, allPosts, rankedPosts, recentPosts, tags, postsHavingSameTag] =
     getRankedPosts(),
     getPosts(5),
     getAllTags(),
-    getPostsByTag(post.Tags[0]?.name, 6),
+    getPostsByTag(post.Tags[0]?.name, 4),
   ])
 
 const fileAtacchedBlocks = extractTargetBlocks('image', blocks)
@@ -106,17 +108,27 @@ if (post.FeaturedImage && post.FeaturedImage.Url) {
   ogImage={ogImage}
 >
   <div slot="main" class={styles.main}>
+    <SideLink />
     <div class={styles.post}>
       <PostDate post={post} />
       <PostTags post={post} />
-      <PostTitle post={post} enableLink={false} />
+      <PostTitle post={post} enableLink={false} fontXL={true} />
       <!-- サムネイルを表示 -->
       <PostFeaturedImage post={post} />
       <PostBody blocks={blocks} />
-      <PostTags post={post} />
+      <!-- <PostTags post={post} /> -->
 
       <footer>
-        <PostRelativeLink prevPost={prevPost} nextPost={nextPost} />
+        <!-- <PostRelativeLink prevPost={prevPost} nextPost={nextPost} /> -->
+        <BlogPostsLink
+          heading="関連記事"
+          posts={postsHavingSameTag.filter(
+            // 現在の記事は除外する
+            (p: interfaces.Post) => p.Slug !== post.Slug
+          )}
+          more={true}
+          moreLink={getTagLink(post.Tags[0]?.name)}
+        />
       </footer>
     </div>
   </div>
@@ -125,7 +137,9 @@ if (post.FeaturedImage && post.FeaturedImage.Url) {
     <Profile isLargeSize={false}/>
 
     {// 目次}
-    <ContentList blocks={blocks} />
+    <div class={styles.stickyBox}>
+      <ContentList blocks={blocks} />
+    </div>
 
     <!--
       <BlogPostsLink
@@ -134,9 +148,9 @@ if (post.FeaturedImage && post.FeaturedImage.Url) {
           (p: interfaces.Post) => p.Slug !== post.Slug
         )}
       />
-      <BlogPostsLink heading="Recommended" posts={rankedPosts} />
+      <BlogPostsLink heading="人気記事" posts={rankedPosts} />
       <BlogPostsLink heading="Latest posts" posts={recentPosts} />
+      <BlogTagsLink heading="タグ一覧" tags={tags} />
     -->
-    <BlogTagsLink heading="タグ一覧" tags={tags} />
   </div>
 </Layout>

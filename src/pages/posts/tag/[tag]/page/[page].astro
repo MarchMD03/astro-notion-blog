@@ -60,7 +60,7 @@ const currentTag = posts[0].Tags.find((t) => t.name === tag)
     <header>
       <div class="tag-container">
         <span class={`tag ${currentTag.color}`}>{tag}</span>
-        {page}/{numberOfPages}
+        {/* {page}/{numberOfPages} */}
       </div>
     </header>
 
@@ -68,16 +68,7 @@ const currentTag = posts[0].Tags.find((t) => t.name === tag)
       posts.length === 0 ? (
         <NoContents contents={posts} />
       ) : (
-        posts.map((post) => (
-          <div class={styles.post} key={post.Slug}>
-            <PostDate post={post} />
-            <PostTags post={post} />
-            <PostTitle post={post} />
-            <PostFeaturedImage post={post} />
-            <PostExcerpt post={post} />
-            <ReadMoreLink post={post} />
-          </div>
-        ))
+        <BlogPostsLink heading={`${tag}の記事`} posts={posts} />
       )
     }
 
@@ -92,7 +83,7 @@ const currentTag = posts[0].Tags.find((t) => t.name === tag)
 
   <div slot="aside" class={styles.aside}>
     <Profile isLargeSize={true}/>
-    <BlogPostsLink heading="Recommended" posts={rankedPosts} />
+    <BlogPostsLink heading="人気記事" posts={rankedPosts} />
     <BlogTagsLink heading="タグ一覧" tags={tags} />
   </div>
 </Layout>

@@ -35,21 +35,23 @@ const id = buildHeadingId(block.Heading2)
     //     )}
     //   </div>
     // </details>
-    <a href={`#${id}`} id={id}>
-      <h5>
-        {block.Heading2.RichTexts.map((richText: interfaces.RichText) => (
-          <RichText richText={richText} />
-        ))}
-      </h5>
-    </a>
-    <div>
-      {block.Heading2.Children && (
-        <NotionBlocks blocks={block.Heading2.Children} headings={headings} />
-      )}
-    </div>
+    <>
+      <a href={`#${id}`} id={id}>
+        <h5 data-section={id}>
+          {block.Heading2.RichTexts.map((richText: interfaces.RichText) => (
+            <RichText richText={richText} />
+          ))}
+        </h5>
+      </a>
+      <div>
+        {block.Heading2.Children && (
+          <NotionBlocks blocks={block.Heading2.Children} headings={headings} />
+        )}
+      </div>
+    </>
   ) : (
     <a href={`#${id}`} id={id}>
-      <h5>
+      <h5 data-section={id}>
         {block.Heading2.RichTexts.map((richText: interfaces.RichText) => (
           <RichText richText={richText} />
         ))}
@@ -68,7 +70,7 @@ const id = buildHeadingId(block.Heading2)
 
     /* 見出しデザイン */
     padding: 10px 0 10px 16px;
-    border-left: 4px solid var(--accents-add-1);
+    border-left: 4px solid var(--accents);
   }
   @media (max-width: 640px) {
     h5 {

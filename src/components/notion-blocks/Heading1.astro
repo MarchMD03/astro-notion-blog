@@ -36,21 +36,23 @@ const id = buildHeadingId(block.Heading1)
     //     )}
     //   </div>
     // </details>
-    <a href={`#${id}`} id={id}>
-      <h4 class="fa-pencil">
-        {block.Heading1.RichTexts.map((richText: interfaces.RichText) => (
-          <RichText richText={richText} />
-        ))}
-      </h4>
-    </a>
-    <div>
-      {block.Heading1.Children && (
-        <NotionBlocks blocks={block.Heading1.Children} headings={headings} />
-      )}
-    </div>
+    <>
+      <a href={`#${id}`} id={id}>
+        <h4 class="fa-pencil" data-section={id}>
+          {block.Heading1.RichTexts.map((richText: interfaces.RichText) => (
+            <RichText richText={richText} />
+          ))}
+        </h4>
+      </a>
+      <div>
+        {block.Heading1.Children && (
+          <NotionBlocks blocks={block.Heading1.Children} headings={headings} />
+        )}
+      </div>
+    </>
   ) : (
     <a href={`#${id}`} id={id}>
-      <h4 class="fa-pencil">
+      <h4 class="fa-pencil" data-section={id}>
         {block.Heading1.RichTexts.map((richText: interfaces.RichText) => (
           <RichText richText={richText} />
         ))}
@@ -70,11 +72,11 @@ const id = buildHeadingId(block.Heading1)
 
     /* 見出しデザイン */
     position: relative;
-    background: #f1f8ff;
+    background: var(--main);
     padding: 0.25em 0.5em;
-    border-left: solid 2em var(--accents-add-1);
+    border-left: solid 2em var(--accents);
   }
-  h4::before{
+  h4::before {
     /* Font Awesomeで読み込む場合 */
     /* font-family: "Font Awesome 5 Free"; */
     /* content: "\f303"; */

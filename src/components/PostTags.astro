@@ -2,20 +2,28 @@
 import type { Post, SelectProperty } from '../lib/interfaces.ts'
 import { getTagLink } from '../lib/blog-helpers.ts'
 import '../styles/notion-color.css'
+import { PARENT_CATEGORY_COLOR } from '../config';
 
 export interface Props {
   post: Post
   enableLink: boolean
+  displayOnlyParentTags: boolean
 }
 
-const { post, enableLink = true } = Astro.props
+const { post, enableLink = true, displayOnlyParentTags = false } = Astro.props
+
+// 親カテゴリーのタグだけにフィルターする
+let filteredTags = post.Tags;
+displayOnlyParentTags && post.Tags && post.Tags.length > 0 &&(
+  filteredTags = post.Tags.filter((tag: SelectProperty) => tag.color === PARENT_CATEGORY_COLOR)
+)
 ---
 
 <div class="post-tags">
   {
-    post.Tags &&
-      post.Tags.length > 0 &&
-      post.Tags.map((tag: SelectProperty) => {
+    filteredTags &&
+      filteredTags.length > 0 &&
+      filteredTags.map((tag: SelectProperty) => {
         if (enableLink) {
           return (
             <a href={getTagLink(tag.name)} class={`tag ${tag.color}`}>
@@ -42,9 +50,16 @@ const { post, enableLink = true } = Astro.props
     flex-shrink: 1;
     min-width: 0;
     border-radius: 3px;
-    padding: 2px 6px;
+    padding: 5px 12px;
     line-height: 1.2;
     color: rgb(50, 48, 44);
     background: rgba(227, 226, 224, 0.5);
+  }
+  @media (max-width: 640px) {
+    .post-tags a,
+    .post-tags span{
+      font-size: 0.7rem;
+      padding: 2px 8px;
+    }
   }
 </style>
