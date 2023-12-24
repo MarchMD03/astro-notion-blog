@@ -32,6 +32,7 @@ import PostFeaturedImage from '../../components/PostFeaturedImage.astro'
 import ContentList from '../../components/ContentList.astro'
 // プロフィールを使用する
 import Profile from '../../components/Profile.astro'
+import SideLink from '../../components/SideLink.astro'
 
 export async function getStaticPaths() {
   const posts = await getAllPosts()
@@ -107,6 +108,7 @@ if (post.FeaturedImage && post.FeaturedImage.Url) {
   ogImage={ogImage}
 >
   <div slot="main" class={styles.main}>
+    <SideLink />
     <div class={styles.post}>
       <PostDate post={post} />
       <PostTags post={post} />

@@ -1,0 +1,92 @@
+---
+/**
+ * 縦並びの各種リンク
+ * 
+ * 全体をposition: absolute; で左端に固定（親要素はpositon: relativeであること）
+ * 内側をposition: sticky; で上端に固定
+ */
+---
+
+<div class="side-link">
+  <div class="side-link-inner">
+    <div class="flex-container">
+      <a aria-label="トップページに戻る" href="/" class="home-link"
+        ><svg
+          xmlns="http://www.w3.org/2000/svg"
+          version="1.0"
+          width="1280.000000pt"
+          height="1206.000000pt"
+          viewBox="0 0 1280.000000 1206.000000"
+          preserveAspectRatio="xMidYMid meet"
+        >
+          <g
+            transform="translate(0.000000,1206.000000) scale(0.100000,-0.100000)"
+            fill="#8f9faa"
+            stroke="none"
+          >
+            <path
+              d="M5828 11600 c-282 -250 -1418 -1256 -2523 -2235 -1106 -978 -2165 -1917 -2355 -2085 -190 -168 -460 -407 -600 -530 -140 -124 -276 -245 -302 -270 l-48 -45 330 -370 c181 -203 336 -369 343 -369 8 1 603 521 1323 1156 3778 3332 4388 3868 4395 3866 4 -2 470 -413 1036 -914 565 -501 1842 -1631 2836 -2512 994 -881 1812 -1602 1817 -1602 5 0 12 5 15 10 5 8 11 7 21 -1 19 -15 -10 -45 339 351 153 173 293 331 312 351 l34 36 -838 739 c-461 407 -1544 1363 -2408 2124 -863 762 -1919 1693 -2347 2070 l-776 685 -45 0 -45 0 -514 -455z"
+            ></path>
+            <path
+              d="M5707 9301 c-364 -322 -1370 -1213 -2235 -1979 l-1572 -1393 2 -2872 3 -2872 22 -41 c12 -23 41 -58 64 -77 83 -72 -24 -67 1561 -67 l1428 0 2 1273 c3 1266 3 1272 24 1317 26 58 76 108 134 134 45 21 52 21 1224 24 1304 3 1248 5 1322 -60 52 -46 81 -97 93 -163 8 -40 11 -454 11 -1292 l0 -1233 1484 2 1485 3 30 29 c17 16 45 63 63 105 l33 76 2 2860 2 2860 -2240 1975 c-1270 1120 -2249 1976 -2260 1976 -13 1 -247 -200 -682 -585z"
+            ></path>
+          </g>
+          <deepl-alert xmlns=""></deepl-alert><deepl-alert xmlns=""
+          ></deepl-alert><deepl-alert xmlns=""></deepl-alert></svg
+        >
+      </a>
+      <span class="spacer"></span>
+      <a
+        aria-label="X(Twitter)のリンク"
+        href="https://twitter.com/rakuraku_eng"
+        rel="noopener noreferrer"
+        target="_blank"
+      >
+        <svg width="27" height="28" viewBox="0 0 27 28" fill="none">
+          <path
+            d="M16.0687 11.7356L26.12 0H23.7382L15.0106 10.1899L8.03988 0H0L10.5411 15.4089L0 27.7155H2.38199L11.5985 16.9546L18.9601 27.7155H27L16.0681 11.7356H16.0687ZM12.8062 15.5447L11.7382 14.0103L3.24025 1.80106H6.89884L13.7568 11.6543L14.8248 13.1887L23.7393 25.9963H20.0807L12.8062 15.5452V15.5447Z"
+            fill="currentColor"></path>
+        </svg>
+      </a>
+    </div>
+  </div>
+</div>
+
+<style>
+  .side-link {
+    position: absolute;
+    left: -80px;
+    width: 50px;
+    height: 100%;
+  }
+  .side-link svg {
+    color: #8f9faa;
+  }
+  .side-link-inner{
+    position: sticky;
+    top: 100px;
+  }
+  .spacer {
+    display: block;
+    height: 1rem;
+    flex-shrink: 0;
+  }
+
+  .flex-container {
+    display: flex;
+    gap: 0.5rem;
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .home-link svg {
+    width: 27px;
+    height: 28px;
+  }
+  @media (max-width: 1300px) {
+    .side-link {
+      display: none;
+    }
+  }
+
+</style>
