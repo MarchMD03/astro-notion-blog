@@ -15,6 +15,7 @@ import {
   getPostLink,
   filePath,
   extractTargetBlocks,
+  getTagLink,
 } from '../../lib/blog-helpers.ts'
 import Layout from '../../layouts/Layout.astro'
 import PostDate from '../../components/PostDate.astro'
@@ -123,6 +124,8 @@ if (post.FeaturedImage && post.FeaturedImage.Url) {
             // 現在の記事は除外する
             (p: interfaces.Post) => p.Slug !== post.Slug
           )}
+          more={true}
+          moreLink={getTagLink(post.Tags[0]?.name)}
         />
       </footer>
     </div>

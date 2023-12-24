@@ -13,9 +13,11 @@ export interface Props {
   heading: string
   posts: Post[]
   columnCount: number // カラム数（5列以上を指定すると、子要素の数によっては最終行の余白が不自然になることがある）
+  more: boolean       // もっと見るボタンを表示するかどうか
+  moreLink: string    // もっと見るボタンのリンク先
 }
 
-const { heading, posts, columnCount = 2 } = Astro.props
+const { heading, posts, columnCount = 2, more = false, moreLink = '' } = Astro.props
 ---
 
 {
@@ -27,6 +29,13 @@ const { heading, posts, columnCount = 2 } = Astro.props
           <PostCard post={post} fontXL={false} />
         ))}
       </div>
+      {
+        more && moreLink ? (
+          <a class="more-link" href={moreLink}>
+            もっと見る
+          </a>
+        ) : null
+      }
     </div>
   )
 }
@@ -130,5 +139,19 @@ const { heading, posts, columnCount = 2 } = Astro.props
       (100% / var(--column-count)) -
         (var(--gap) * (var(--column-count) - 1) / var(--column-count))
     );
+  }
+
+  .more-link{
+    display: block;
+    margin: 0 auto;
+    width: 200px;
+    text-align: center;
+    padding: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    color: var(--fg);
+    font-size: 1.2rem;
+    font-weight: 700;
+    text-decoration: none;
   }
 </style>
