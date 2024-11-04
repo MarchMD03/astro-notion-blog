@@ -127,6 +127,10 @@ const asidePaddingTop = '20px'
             coverImageURL && (
               <div class="cover">
                 <img src={coverImageURL} />
+                <div class="cover-search">
+                  <SearchModal />
+                  <SearchButton />
+                </div>
               </div>
             )
           }
@@ -263,6 +267,7 @@ const asidePaddingTop = '20px'
   }
 
   div.cover {
+    position: relative;
   }
   div.cover img {
     display: block;
@@ -270,6 +275,12 @@ const asidePaddingTop = '20px'
     height: 310px;
     object-fit: cover;
     object-position: center 60%;
+  }
+  div.cover-search {
+    position: absolute;
+    top: 5px;
+    right: 10%;
+    width: 300px;
   }
   @media (max-width: 640px) {
     div.cover img {
