@@ -37,6 +37,7 @@ const retrieveAndWriteBlockChildren = async (blockId) => {
   }
 
   fs.writeFileSync(`tmp/${blockId}.json`, JSON.stringify(results));
+  console.log("[キャッシュとしてファイルを保存しました]",JSON.stringify(results));
 
   results.forEach(async (block) => {
     if (
@@ -68,6 +69,7 @@ const retrieveAndWriteBlock = async (blockId) => {
   const block = await retry(3, () => notion.blocks.retrieve(params));
 
   fs.writeFileSync(`tmp/${blockId}.json`, JSON.stringify(block));
+  console.log("[キャッシュとしてファイルを保存しました]",JSON.stringify(block));
 
   if (block.has_children) {
     await retrieveAndWriteBlockChildren(block.id);
@@ -76,5 +78,9 @@ const retrieveAndWriteBlock = async (blockId) => {
 
 (async () => {
   const blockId = process.argv[2];
+  const last_edited_time = process.argv[3];
+  console.log("[ページID]",blockId);
+  console.log("[最終更新日時]",last_edited_time);
+
   await retrieveAndWriteBlockChildren(blockId);
 })();
