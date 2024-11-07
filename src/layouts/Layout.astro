@@ -13,6 +13,8 @@ import GoogleAnalytics from '../components/GoogleAnalytics.astro'
 import type { SelectProperty } from '../lib/interfaces.ts'
 import NoContents from '../components/NoContents.astro'
 import { PARENT_CATEGORY_COLOR } from '../config'
+import SearchModal from '../components/SearchModal.astro'
+import SearchButton from '../components/SearchButton.astro'
 
 export interface Props {
   title: string
@@ -125,6 +127,10 @@ const asidePaddingTop = '20px'
             coverImageURL && (
               <div class="cover">
                 <img src={coverImageURL} />
+                <div class="cover-search">
+                  <SearchModal />
+                  <SearchButton />
+                </div>
               </div>
             )
           }
@@ -176,6 +182,7 @@ const asidePaddingTop = '20px'
     <div class="container">
       <main>
         <div class="content">
+          
           <slot name="main" />
 
           <footer>
@@ -193,13 +200,14 @@ const asidePaddingTop = '20px'
         <slot name="aside" />
       </aside>
     </div>
-  </body>
 
   {
     ENABLE_LIGHTBOX && (
       <script src={getStaticFilePath('/scripts/fslightbox.js')} />
     )
   }
+  </body>
+
 </html>
 
 <style define:vars={{ asidePaddingTop }}>
@@ -259,6 +267,7 @@ const asidePaddingTop = '20px'
   }
 
   div.cover {
+    position: relative;
   }
   div.cover img {
     display: block;
@@ -266,6 +275,12 @@ const asidePaddingTop = '20px'
     height: 310px;
     object-fit: cover;
     object-position: center 60%;
+  }
+  div.cover-search {
+    position: absolute;
+    top: 5px;
+    right: 10%;
+    width: 300px;
   }
   @media (max-width: 640px) {
     div.cover img {
