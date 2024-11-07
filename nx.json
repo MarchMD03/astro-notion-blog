@@ -5,7 +5,7 @@
       "options": {
         "cacheableOperations": ["_fetch-notion-blocks"],
         "parallel": 8,
-        "accessToken": "OTc2MTU5NjYtMjJlOS00OTBjLWIxY2UtNjkwZDNkMGNhMTA0fHJlYWQtd3JpdGU="
+        "accessToken": "MjdkZjk5NmUtNDJjNS00ZmUwLThkODctMDg0NGE5NTY2MzZhfHJlYWQtd3JpdGU="
       }
     }
   },
