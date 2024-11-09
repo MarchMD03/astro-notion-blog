@@ -312,11 +312,7 @@ const retrieveAndWriteBlockChildren = async (blockId, queue, allBlocks = []) => 
     ) {
       try {
         // 同期元のブロックを再帰的に取得
-        const syncedBlocks = await retrieveAndWriteBlock(block.synced_block.synced_from.block_id, queue);
-        allBlocks.push({
-          id: block.synced_block.synced_from.block_id,
-          blocks: syncedBlocks
-        });
+        await retrieveAndWriteBlock(block.synced_block.synced_from.block_id, queue);
       } catch (err) {
         console.log(
           `Could not retrieve the original synced_block. error: ${err}`
