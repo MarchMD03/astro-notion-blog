@@ -58,6 +58,9 @@ const getAllDataS3 = async () => {
     try {
       // データを取得
       const response = await S3.send(command);
+      if (!response.Contents) {
+        break;
+      }
       allContents.push(...response.Contents);
 
       // ページネーションの継続フラグを更新
@@ -146,29 +149,49 @@ const downloadAllFilesS3 = async () => {
         }
 
         const fileData = await fs.promises.readFile(filePath, 'utf-8');
-        downloadedData.push(JSON.parse(fileData));
+        const jsonData = JSON.parse(fileData);
+
+        // ブロックごとに分解して保存
+        for (const block of jsonData.blocks) {
+          if (!block.id || !block.blocks) {
+            continue;
+          }
+          // キー名をIDに変更
+          const blockId = block.id;
+          fs.writeFileSync(`tmp/${blockId}.json`, JSON.stringify(block.blocks));
+        }
+
+        downloadedData.push(jsonData);
         progressBar.increment();
         return resolve();
       });
     });
-
   console.log("[データをすべてダウンロード]", downloadCount, "件ダウンロードしました");
   return downloadedData;
 }
 
 /**
- * キャッシュを保存
+ * キャッシュを保存（ローカル）
  * 
- * @param {string} blockId - キャッシュするブロックのID
- * @param {Object} block - キャッシュするブロックのデータ
+ * @param {string} fileName - ファイル名
+ * @param {Object} data - キャッシュするデータ（JSON）
  */
-const saveCache = async (blockId, block) => {
+const saveCacheLocal = async (fileName, data) => {
     // ファイルを保存
-    fs.writeFileSync(`tmp/${blockId}.json`, JSON.stringify(block));
-
-    // Cloudflare R2にアップロード
-    await uploadFileS3(`${blockId}`, JSON.stringify(block));
+    fs.writeFileSync(`tmp/${fileName}.json`, JSON.stringify(data));
 }  
+
+/**
+ * キャッシュを保存（リモート）
+ * 
+ * @param {string} fileName - ファイル名
+ * @param {Object} block - キャッシュするデータ（JSON）
+ */
+const saveCacheRemote = async (fileName, data) => {
+  // Cloudflare R2にアップロード
+  await uploadFileS3(`${fileName}`, JSON.stringify(data));
+}
+
 
 /**
  * Notion からページを取得
@@ -247,7 +270,7 @@ const retry = (maxRetries, fn) => {
  * @param {Object} queue - リクエストを制限するためのキューオブジェクト
  * @returns {Promise} - ブロックの再帰的取得結果のプロミス
  */
-const retrieveAndWriteBlockChildren = async (blockId, queue) => {
+const retrieveAndWriteBlockChildren = async (blockId, queue, allBlocks = []) => {
   const params = { block_id: blockId };
 
   let results = [];
@@ -272,10 +295,16 @@ const retrieveAndWriteBlockChildren = async (blockId, queue) => {
   }
 
   // キャッシュを保存
-  saveCache(blockId, results);
+  saveCacheLocal(blockId, results);
+
+  // すべてのブロックをまとめる
+  allBlocks.push({
+    id: blockId,
+    blocks: results
+  });
 
   // ブロックの子要素を再帰的に取得
-  results.forEach(async (block) => {
+  for (const block of results) {
     if (
       block.type === 'synced_block' && // 同期されたブロック
       block.synced_block.synced_from && // 同期元のブロックが存在する
@@ -283,7 +312,11 @@ const retrieveAndWriteBlockChildren = async (blockId, queue) => {
     ) {
       try {
         // 同期元のブロックを再帰的に取得
-        await retrieveAndWriteBlock(block.synced_block.synced_from.block_id, queue);
+        const syncedBlocks = await retrieveAndWriteBlock(block.synced_block.synced_from.block_id, queue);
+        allBlocks.push({
+          id: block.synced_block.synced_from.block_id,
+          blocks: syncedBlocks
+        });
       } catch (err) {
         console.log(
           `Could not retrieve the original synced_block. error: ${err}`
@@ -292,9 +325,11 @@ const retrieveAndWriteBlockChildren = async (blockId, queue) => {
       }
     } else if (block.has_children) {
       // ブロックの子要素がある場合は再帰的に取得
-      await retrieveAndWriteBlockChildren(block.id, queue);
+      await retrieveAndWriteBlockChildren(block.id, queue, allBlocks);
     }
-  });
+  }
+
+  return allBlocks;
 };
 
 /**
@@ -315,14 +350,40 @@ const retrieveAndWriteBlock = async (blockId, queue) => {
   }
 
   // キャッシュを保存
-  saveCache(blockId, block);
+  saveCacheLocal(blockId, block);
+
+  // すべてのブロックをまとめる
+  const allBlocks = [block];
 
   // ブロックの子要素がある場合は再帰的に取得
   if (block.has_children) {
-    await retrieveAndWriteBlockChildren(block.id, queue);
+    await retrieveAndWriteBlockChildren(block.id, queue, allBlocks);
   }
+
+  return allBlocks;
 };
 
+/**
+ * ページ全体をキャッシュ
+ * 
+ * @param {string} fileName - ファイル名
+ * @param {string} pageId - ページのID
+ * @param {string} last_edited_time - ページの最終更新日時
+ * @param {Object} queue - リクエストを制限するためのキューオブジェクト
+ */
+const savePageCache = async (fileName, pageId, last_edited_time, queue) => {
+  const allBlocks = await retrieveAndWriteBlock(pageId, queue);
+  if (allBlocks) {
+    // ページ全体を1つのファイルにまとめて保存
+    const pageData = {
+      pageId: pageId,
+      last_edited_time: last_edited_time,
+      blocks: allBlocks,
+    };
+    await saveCacheLocal(fileName, pageData);
+    await saveCacheRemote(fileName, pageData);
+  }
+};
 
 (async () => {
   // For Notion API Requests limits
@@ -345,7 +406,7 @@ const retrieveAndWriteBlock = async (blockId, queue) => {
   // -----------------------------------------------------
   const updatedPages = pages.filter((page) => {
     const cachePage = cachePages.length > 0 ? cachePages.find((cachePage) => {
-      return page.id === cachePage.id;
+      return page.id === cachePage.pageId;
     }) : null;
 
     // キャッシュがない
@@ -376,8 +437,9 @@ const retrieveAndWriteBlock = async (blockId, queue) => {
         return new Promise(async (resolve) => {
           console.log("[ページのキャッシュを開始]:", page.slug);
           // キャッシュを保存
-          await saveCache(page.slug, page); // ページ情報をキャッシュ（ファイル名をidにするとブロックのデータとファイル名が重複するので、ファイル名はスラッグにする。）
-          await retrieveAndWriteBlockChildren(page.id, queue); // ページ内のブロック情報を再帰的にキャッシュ
+          // await saveCacheLocal(page.slug, page); // ページ情報をキャッシュ
+          // await saveCacheRemote(page.slug, page); // ページ情報をキャッシュ
+          await savePageCache(`${page.slug}.json`, page.id, page.last_edited_time, queue); // ページ全体をキャッシュ
           progressBar.increment();
           return resolve();
         });
