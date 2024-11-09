@@ -19,6 +19,7 @@
   "dependencies": {
     "@astrojs/react": "^3.0.3",
     "@astrojs/rss": "^3.0.0",
+    "@aws-sdk/client-s3": "^3.686.0",
     "@notionhq/client": "^2.2.5",
     "@supercharge/promise-pool": "^2.4.0",
     "astro": "^3.3.1",
@@ -32,6 +33,7 @@
     "metascraper-description": "^5.34.4",
     "metascraper-image": "^5.34.4",
     "metascraper-title": "^5.34.4",
+    "p-queue": "^8.0.1",
     "prismjs": "^1.29.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
