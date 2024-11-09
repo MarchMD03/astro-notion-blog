@@ -431,6 +431,7 @@ const savePageCache = async (fileName, pageId, last_edited_time, queue) => {
   );
   
   if (updatedPages.length === 0) {
+    console.log("記事の更新はありません");
     progressBar.stop();
   } else {
     progressBar.start(updatedPages.length, 0);
