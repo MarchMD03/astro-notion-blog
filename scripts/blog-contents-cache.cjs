@@ -353,7 +353,10 @@ const retrieveAndWriteBlock = async (blockId, queue) => {
   saveCacheLocal(blockId, block);
 
   // すべてのブロックをまとめる
-  const allBlocks = [block];
+  const allBlocks = [{
+    id: blockId,
+    blocks: [block]
+  }];
 
   // ブロックの子要素がある場合は再帰的に取得
   if (block.has_children) {
