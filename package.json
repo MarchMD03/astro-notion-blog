@@ -13,12 +13,14 @@
     "lint": "eslint --ext .js,.ts,.astro src",
     "format": "npx prettier --write .",
     "cache:fetch": "node scripts/blog-contents-cache.cjs",
+    "cache:delete-local": "rm -f tmp/*",
     "cache:purge": "nx reset && rm -f tmp/*",
     "_fetch-notion-blocks": "node scripts/retrieve-block-children.cjs"
   },
   "dependencies": {
     "@astrojs/react": "^3.0.3",
     "@astrojs/rss": "^3.0.0",
+    "@aws-sdk/client-s3": "^3.686.0",
     "@notionhq/client": "^2.2.5",
     "@supercharge/promise-pool": "^2.4.0",
     "astro": "^3.3.1",
@@ -32,6 +34,7 @@
     "metascraper-description": "^5.34.4",
     "metascraper-image": "^5.34.4",
     "metascraper-title": "^5.34.4",
+    "p-queue": "^8.0.1",
     "prismjs": "^1.29.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
@@ -53,7 +56,8 @@
     "cli-progress": "^3.12.0",
     "eslint": "^8.51.0",
     "eslint-plugin-astro": "^0.27.0",
-    "nx": "15.5.3"
+    "nx": "15.5.3",
+    "wrangler": "^3.85.0"
   },
   "nx": {
     "targets": {
