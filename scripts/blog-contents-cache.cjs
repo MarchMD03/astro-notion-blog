@@ -113,11 +113,12 @@ const downloadFileS3 = async (key, path) => {
 }
 
 /**
- * Cloudflare R2からすべてのデータをダウンロード
+ * キャッシュを読み込む
+ * Cloudflare R2からすべてのデータをダウンロードして、ブロックごとに分割してローカルtmpに保存
  * 
  * @returns {Promise<Array>} - ダウンロードしたデータの配列
  */
-const downloadAllFilesS3 = async () => {
+const loadCache = async () => {
   const objects = await getAllDataS3();
   const contents = objects.Contents;
 
@@ -385,23 +386,21 @@ const savePageCache = async (fileName, pageId, last_edited_time, queue) => {
 };
 
 (async () => {
-  // For Notion API Requests limits
-  // See https://developers.notion.com/reference/request-limits
+	// Notion APIを1秒に3回までに制限
   const queue = new (await import('p-queue')).default({ interval: 1000, intervalCap: 3 }) // Notion APIを1秒に3回までに制限
 
   // -----------------------------------------------------
-  // 1. Cloudflare R2 からキャッシュしておいたNotionページを取得
-  // -----------------------------------------------------
-  const cachePages = await downloadAllFilesS3();
-
-  // -----------------------------------------------------
-  // 2. Notion からページを取得
+  // 1. Notion からページを取得（更新日を取得したい）
   // -----------------------------------------------------
   const pages = await getAllPages(queue);
 
   // -----------------------------------------------------
-  // 3. Notionページが更新されているかチェック
-  // （更新があるページを抽出）
+  // 2. Cloudflare R2 からキャッシュを取得
+  // -----------------------------------------------------
+  const cachePages = await loadCache();
+
+  // -----------------------------------------------------
+  // 3. キャッシュの更新日と比較（更新があるページ、新規のページのみ抽出）
   // -----------------------------------------------------
   const updatedPages = pages.filter((page) => {
     const cachePage = cachePages.length > 0 ? cachePages.find((cachePage) => {
@@ -415,11 +414,9 @@ const savePageCache = async (fileName, pageId, last_edited_time, queue) => {
 
     return page.last_edited_time !== cachePage.last_edited_time;
   });
-  // TODO；データが更新された場合に再キャッシュされるか確認
 
   // -----------------------------------------------------
-  // 4. 更新があるページをキャッシュ
-  // （Notionブロックを再帰的に取得し、ローカルtmpに保存、リモートCloudflare R2にアップロード）
+  // 4. データ取得（更新があるページ、新規のページのみ）
   // -----------------------------------------------------
   const progressBar = new cliProgress.SingleBar(
     { stopOnComplete: true },
@@ -436,9 +433,10 @@ const savePageCache = async (fileName, pageId, last_edited_time, queue) => {
       .process(async (page) => {
         return new Promise(async (resolve) => {
           console.log("[ページのキャッシュを開始]:", page.slug);
-          // キャッシュを保存
-          // await saveCacheLocal(page.slug, page); // ページ情報をキャッシュ
-          // await saveCacheRemote(page.slug, page); // ページ情報をキャッシュ
+          // -----------------------------------------------------
+          // 5. キャッシュを生成
+          // 6. キャッシュをアップロード
+          // -----------------------------------------------------
           await savePageCache(`${page.slug}.json`, page.id, page.last_edited_time, queue); // ページ全体をキャッシュ
           progressBar.increment();
           return resolve();
